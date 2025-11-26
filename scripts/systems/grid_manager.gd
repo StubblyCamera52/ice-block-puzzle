@@ -6,12 +6,16 @@ var player_pos: Vector2i
 
 signal visualize_block_path(start_cell: Vector2i, path: Array[Vector2i])
 signal update_visual_grid(blocks: Dictionary[Vector2i, BAT.Blocks], tiles: Dictionary[Vector2i, BAT.Tiles])
+signal update_player_pos(new_pos: Vector2i)
 
 func _ready() -> void:
 	player_pos = Vector2i(0, 0)
 	for i in range(14*14):
 		tile_grid.set(Vector2i(i%14, floor(i/14)), BAT.Tiles.Stone)
 		block_grid.set(Vector2i(i%14, floor(i/14)), BAT.Blocks.Air)
+	
+	block_grid.set(Vector2i(0, 0), BAT.Blocks.Player)
+	block_grid.set(Vector2i(0, 1), BAT.Blocks.Ice)
 	
 	print(tile_grid, block_grid)
 	await get_tree().process_frame
@@ -22,9 +26,10 @@ func compute_slide_path(start_cell: Vector2i, direction: Vector2i, block_type: B
 	var max_slide_distance = BAT.BlockProperties[block_type]["max_slide_distance"]
 	var slide_direction = direction
 	var block_path: Array[Vector2i] = []
+	var previous_cell = start_cell
 	
 	for step in range(max_slide_distance):
-		var next_cell = start_cell + slide_direction
+		var next_cell = previous_cell + slide_direction
 		if ((next_cell.x < 0 or next_cell.x > 13) or (next_cell.y < 0 or next_cell.y > 13)): break
 		var next_cell_tile_type = tile_grid.get(next_cell)
 		var next_cell_block_type = block_grid.get(next_cell)
@@ -34,6 +39,7 @@ func compute_slide_path(start_cell: Vector2i, direction: Vector2i, block_type: B
 		var new_slide_direction: Vector2i = BAT.TileProperties[next_cell_tile_type]["slide_direction"]
 		if new_slide_direction.length() > 0: slide_direction = new_slide_direction
 		block_path.append(next_cell)
+		previous_cell = next_cell
 	
 	return block_path
 
@@ -48,4 +54,10 @@ func attempt_push(cell: Vector2i, direction: Vector2i) -> bool:
 	var block_path = compute_slide_path(cell, direction, block_type)
 	if block_path.size() == 0:
 		return false
+	print(block_path)
+	block_grid.set(cell, BAT.Blocks.Air)
+	block_grid.set(block_path[block_path.size()-1], block_type)
+	update_visual_grid.emit(block_grid, tile_grid)
+	if block_type == BAT.Blocks.Player:
+		update_player_pos.emit(block_path[block_path.size()-1])
 	return true

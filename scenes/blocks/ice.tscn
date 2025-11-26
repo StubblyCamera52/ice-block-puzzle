@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://bg3ij6fnsyuuo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4btv1"]
+albedo_color = Color(0.7882353, 0.78039217, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_qpmue"]
+material = SubResource("StandardMaterial3D_4btv1")
+
+[node name="Ice" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_qpmue")

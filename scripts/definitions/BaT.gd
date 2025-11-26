@@ -50,5 +50,10 @@ const BlockProperties := {
 		"collision": true,
 		"pushable": true,
 		"max_slide_distance": 3,
+	},
+	Blocks.Player: {
+		"collision": true,
+		"pushable": true,
+		"max_slide_distance": 1
 	}
 }
