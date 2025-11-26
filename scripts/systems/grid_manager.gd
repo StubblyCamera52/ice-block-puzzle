@@ -11,11 +11,14 @@ signal update_player_pos(new_pos: Vector2i)
 func _ready() -> void:
 	player_pos = Vector2i(0, 0)
 	for i in range(14*14):
-		tile_grid.set(Vector2i(i%14, floor(i/14)), BAT.Tiles.Stone)
+		if randf() > 0.5:
+			tile_grid.set(Vector2i(i%14, floor(i/14)), BAT.Tiles.Stone)
+		else:
+			tile_grid.set(Vector2i(i%14, floor(i/14)), BAT.Tiles.Ice)
 		block_grid.set(Vector2i(i%14, floor(i/14)), BAT.Blocks.Air)
 	
 	block_grid.set(Vector2i(0, 0), BAT.Blocks.Player)
-	block_grid.set(Vector2i(0, 1), BAT.Blocks.Ice)
+	block_grid.set(Vector2i(1, 1), BAT.Blocks.Ice)
 	
 	print(tile_grid, block_grid)
 	await get_tree().process_frame
@@ -39,7 +42,9 @@ func compute_slide_path(start_cell: Vector2i, direction: Vector2i, block_type: B
 		var new_slide_direction: Vector2i = BAT.TileProperties[next_cell_tile_type]["slide_direction"]
 		if new_slide_direction.length() > 0: slide_direction = new_slide_direction
 		block_path.append(next_cell)
+		if (BAT.TileProperties[next_cell_tile_type]["slide_behavior"] == BAT.SlideBehavior.STOP): break
 		previous_cell = next_cell
+		
 	
 	return block_path
 

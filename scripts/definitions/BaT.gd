@@ -7,13 +7,24 @@ enum Blocks {
 	Ice,
 	Snow,
 	Player,
+	Heavy,
+	Wall,
+	Melting,
+	IceMirror,
+	FrozenBomb
 }
 
 enum Tiles {
 	Generic,
 	Ice,
 	Stone,
-	Water
+	Water,
+	Hole,
+	Heater,
+	Freezer,
+	Conveyor,
+	ThinIce,
+	Wind,
 }
 
 enum SlideBehavior {
