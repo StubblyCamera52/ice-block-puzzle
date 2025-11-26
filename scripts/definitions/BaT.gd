@@ -22,7 +22,7 @@ enum SlideBehavior {
 	SLIDE,
 }
 
-const TileProperties = {
+const TileProperties := {
 	Tiles.Generic: {
 		"walkable": false,
 		"slide_behavior": SlideBehavior.STOP,
@@ -40,7 +40,7 @@ const TileProperties = {
 	}
 }
 
-const BlockProperties = {
+const BlockProperties := {
 	Blocks.Air: {
 		"collision": false,
 		"pushable": false,
