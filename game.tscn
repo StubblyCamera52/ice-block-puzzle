@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://muohp4qbqdvs"]
+[gd_scene load_steps=7 format=3 uid="uid://muohp4qbqdvs"]
 
 [ext_resource type="Script" uid="uid://ch1ii50onvhap" path="res://scripts/core/game.gd" id="1_e2o6t"]
 [ext_resource type="PackedScene" uid="uid://dscvgi5mxbxwv" path="res://scenes/core/grid_renderer.tscn" id="2_feb5d"]
+[ext_resource type="Script" uid="uid://s6a4rmfcx3sc" path="res://scripts/systems/ui_manager.gd" id="3_feb5d"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e2o6t"]
 sky_top_color = Color(1, 1, 1, 1)
@@ -34,3 +35,8 @@ shadow_enabled = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, 6.5, 10, 15)
+
+[node name="UIManager" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("3_feb5d")

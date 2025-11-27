@@ -1,33 +1,75 @@
 extends Node3D
 
 
-var player_pos: Vector2i = Vector2i(0, 0)
 var player_facing_direction: Vector2i = Vector2.RIGHT
+
+var input_allowed: bool = true
+
+@onready var UIManager = $UIManager
+@onready var camera: Camera3D = $Camera3D
+
+signal level_started()
+signal level_completed()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	GridManager.update_player_pos.connect(update_player_pos)
+	GameStateManager.level_completed.connect(on_level_completed)
+	
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if not input_allowed: return
+	
+	var direction = Vector2i.ZERO
+	var action_type = ""
+	
 	if event.is_action_pressed("down"):
-		player_facing_direction = Vector2i(0, 1)
-		GridManager.attempt_push(player_pos, Vector2i(0, 1))
+		direction = Vector2i(0, 1)
+		action_type = "move"
 	if event.is_action_pressed("up"):
-		player_facing_direction = Vector2i(0, -1)
-		GridManager.attempt_push(player_pos, Vector2i(0, -1))
+		direction = Vector2i(0, -1)
+		action_type = "move"
 	if event.is_action_pressed("left"):
-		player_facing_direction = Vector2i(-1, 0)
-		GridManager.attempt_push(player_pos, Vector2i(-1, 0))
+		direction = Vector2i(-1, 0)
+		action_type = "move"
 	if event.is_action_pressed("right"):
-		player_facing_direction = Vector2i(1, 0)
-		GridManager.attempt_push(player_pos, Vector2i(1, 0))
+		direction = Vector2i(1, 0)
+		action_type = "move"
 	if event.is_action_pressed("push"):
-		GridManager.attempt_push(player_pos+player_facing_direction, player_facing_direction)
+		direction = player_facing_direction
+		action_type = "push"
+	if event.is_action_pressed("undo"):
+		pass
+	if event.is_action_pressed("restart"):
+		pass
+	
+	if direction != Vector2i.ZERO:
+		player_facing_direction = direction
+		execute_move(action_type, direction)
 		
 
-func update_player_pos(new_player_pos: Vector2i):
-	player_pos = new_player_pos
+func execute_move(action_type: String, direction: Vector2i):
+	var move_data = {
+		"type": "player_"+action_type,
+		"direction": direction
+	}
+	
+	#var success = GameStateManager.execute_move(move_data)
+	GameStateManager.execute_move(move_data)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func restart_level():
+	if GameStateManager.current_level:
+		GameStateManager.load_level(GameStateManager.current_level)
+
+func start_level(level_id: String):
 	pass
+
+func on_level_completed():
+	input_allowed = false
+	print("complete")
+
+func enable_input():
+	input_allowed = true
+
+
+func disable_input():
+	input_allowed = false

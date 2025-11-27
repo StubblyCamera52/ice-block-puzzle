@@ -1,7 +1,6 @@
 extends Node
 
 signal level_completed(level_data: LevelData)
-signal level_failed()
 
 var current_level: LevelData
 var move_history: Array[GameStateSnapshot] = []
@@ -18,6 +17,12 @@ func load_level(level_data: LevelData):
 	current_level = level_data
 	move_history.clear()
 
+func execute_move(move_data: Dictionary):
+	save_state_snapshot()
+	var success = GridManager.execute_move(move_data)
+	
+	if success: check_goals()
+	return success
 
 func save_state_snapshot():
 	var snapshot = GameStateSnapshot.new()
@@ -27,6 +32,13 @@ func save_state_snapshot():
 	move_history.push_back(snapshot)
 	if move_history.size() > max_undo_steps:
 		move_history.pop_front()
+
+# ill implement this later
+func undo_move() -> bool:
+	if move_history.size() <= 1:
+		return false
+	return false
+	move_history.pop_back()
 
 func check_goals():
 	if current_level and current_level.check_completion():

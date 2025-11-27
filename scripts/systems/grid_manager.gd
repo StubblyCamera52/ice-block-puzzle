@@ -7,10 +7,10 @@ var block_states: Dictionary[Vector2i, Dictionary] = {}
 var player_pos: Vector2i
 var grid_size: Vector2i = Vector2i(10, 10)
 
-signal block_moved(from: Vector2i, to: Vector2i, path: Array[Vector2i], type: BAT.Blocks)
+signal block_moved(from: Vector2i, to: Vector2i, path: Array[Vector2i])
 signal tile_changed(cell: Vector2i, old: BAT.Tiles, new: BAT.Tiles)
 signal block_created(cell: Vector2i, type: BAT.Blocks)
-signal block_destroyed(cell: Vector2i, type: BAT.Blocks)
+signal block_destroyed(cell: Vector2i)
 signal update_visual_grid(blocks: Dictionary[Vector2i, BAT.Blocks], tiles: Dictionary[Vector2i, BAT.Tiles])
 
 func load_level_data(level_data: LevelData) -> void:
@@ -116,10 +116,31 @@ func compute_slide_path(start_cell: Vector2i, direction: Vector2i, block_type: B
 	return block_path
 
 func handle_collision_effects(source_cell: Vector2i, target_cell: Vector2i, source_block: BAT.Blocks, target_block: BAT.Blocks):
-	pass
+	var source_properties = BAT.BlockProperties[source_block]
+	var target_properties = BAT.BlockProperties[target_block]
+	
+	if "explosive" in source_properties.get("effects", []):
+		return
+	
+	if "soft_stop" in target_properties.get("effects", []):
+		return
+	
+	return
 
 func handle_tile_effects(cell: Vector2i, block_type: BAT.Blocks):
-	pass
+	if not is_valid_cell(cell): return
+	var tile_type = tile_grid.get(cell, BAT.Tiles.Generic)
+	var tile_properties = BAT.TileProperties[tile_type]
+	var effects = tile_properties.get("effects", [])
+	
+	for effect in effects:
+		match effect:
+			"drownable":
+				if block_type == BAT.Blocks.Ice:
+					tile_grid.set(cell, BAT.Tiles.Ice)
+					block_grid.set(cell, BAT.Blocks.Air)
+					tile_changed.emit(cell, tile_type, BAT.Tiles.Ice)
+					block_destroyed.emit(cell)
 
 
 func attempt_push(cell: Vector2i, direction: Vector2i) -> bool:
@@ -137,8 +158,9 @@ func attempt_push(cell: Vector2i, direction: Vector2i) -> bool:
 	#print(block_path)
 	
 	block_grid.set(cell, BAT.Blocks.Air)
-	block_grid.set(block_path[block_path.size()-1], block_type)
-	update_visual_grid.emit(block_grid, tile_grid)
+	block_grid.set(block_path.back(), block_type)
+	block_moved.emit(cell, block_path.back(), block_path)
+	#update_visual_grid.emit(block_grid, tile_grid)
 	return true
 
 func is_valid_cell(cell: Vector2i) -> bool:
