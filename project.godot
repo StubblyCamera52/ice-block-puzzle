@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 GridManager="*res://scripts/systems/grid_manager.gd"
 BAT="*res://scripts/definitions/BaT.gd"
+GameStateManager="*res://scripts/systems/game_state_manager.gd"
 
 [editor_plugins]
 

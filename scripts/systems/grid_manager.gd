@@ -1,12 +1,17 @@
 extends Node
 
-var tile_grid: Dictionary[Vector2i, BAT.Tiles]
-var block_grid: Dictionary[Vector2i, BAT.Blocks]
+var tile_grid: Dictionary[Vector2i, BAT.Tiles] = {}
+var block_grid: Dictionary[Vector2i, BAT.Blocks] = {}
+var tile_states: Dictionary[Vector2i, Dictionary] = {}
+var block_states: Dictionary[Vector2i, Dictionary] = {}
 var player_pos: Vector2i
+var grid_size: Vector2i = Vector2i(10, 10)
 
-signal visualize_block_path(start_cell: Vector2i, path: Array[Vector2i])
+signal block_moved(from: Vector2i, to: Vector2i, path: Array[Vector2i], type: BAT.Blocks)
+signal tile_changed(cell: Vector2i, old: BAT.Tiles, new: BAT.Tiles)
+signal block_created(cell: Vector2i, type: BAT.Blocks)
+signal block_destroyed(cell: Vector2i, type: BAT.Blocks)
 signal update_visual_grid(blocks: Dictionary[Vector2i, BAT.Blocks], tiles: Dictionary[Vector2i, BAT.Tiles])
-signal update_player_pos(new_pos: Vector2i)
 
 func _ready() -> void:
 	player_pos = Vector2i(0, 0)
