@@ -19,7 +19,7 @@ func load_level(level_data: LevelData):
 	move_history.clear()
 
 
-func _save_state_snapshot():
+func save_state_snapshot():
 	var snapshot = GameStateSnapshot.new()
 	snapshot.player_position = GridManager.player_pos
 	snapshot.move_count = move_history.size()
