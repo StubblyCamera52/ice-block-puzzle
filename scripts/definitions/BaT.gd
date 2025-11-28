@@ -3,6 +3,7 @@ extends Node
 #BaT stands for Blocks and Tiles
 
 enum Blocks {
+	Generic,
 	Air,
 	Ice,
 	Snow,

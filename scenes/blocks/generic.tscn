@@ -1,3 +1,6 @@
-[gd_scene format=3 uid="uid://httdmagn7o2c"]
+[gd_scene load_steps=2 format=3 uid="uid://httdmagn7o2c"]
+
+[ext_resource type="Script" uid="uid://dgk12etevgr0y" path="res://scenes/blocks/scripts/generic.gd" id="1_dao0w"]
 
 [node name="Generic" type="Node3D"]
+script = ExtResource("1_dao0w")
