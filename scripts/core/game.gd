@@ -30,6 +30,7 @@ func _ready() -> void:
 	GameStateManager.level_completed.connect(on_level_completed)
 	await get_tree().process_frame
 	start_level("test00")
+	GridManager.set_tile_at(Vector2i(9, 9), BAT.Tiles.Water)
 	
 
 func _unhandled_key_input(event: InputEvent) -> void:

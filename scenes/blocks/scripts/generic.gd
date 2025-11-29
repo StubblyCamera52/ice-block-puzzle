@@ -73,6 +73,9 @@ func attempt_push(direction: Vector2i) -> bool:
 func on_push_success(direction: Vector2i) -> void:
 	component_manager.call_on_all("on_push_success", [direction])
 
+func on_tile_entered(tile: BAT.Tiles, cell: Vector2i):
+	component_manager.call_on_all("on_tile_entered", [tile, cell])
+
 func on_collision(other_block: GenericBlock) -> bool:
 	var results = component_manager.call_on_all("on_collision", [other_block])
 	return not false in results

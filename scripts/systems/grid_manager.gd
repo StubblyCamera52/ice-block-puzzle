@@ -25,7 +25,12 @@ func create_block_at(cell: Vector2i, block_type: BAT.Blocks) -> GenericBlock:
 	block_created.emit(cell, block_object)
 	return block_object
 
-
+func remove_block_at(cell: Vector2i):
+	block_grid.set(cell, BAT.Blocks.Air)
+	var block_obj = get_block_object_at(cell)
+	if not block_obj: return
+	block_objects.erase(cell)
+	if block_obj.visual_node: block_obj.visual_node.queue_free()
 
 # utils
 func is_valid_cell(cell: Vector2i) -> bool:
@@ -33,6 +38,12 @@ func is_valid_cell(cell: Vector2i) -> bool:
 
 func get_tile_at(cell: Vector2i) -> BAT.Tiles:
 	return tile_grid.get(cell, BAT.Tiles.Generic)
+
+func set_tile_at(cell: Vector2i, new: BAT.Tiles):
+	if not is_valid_cell(cell): return
+	var old = get_tile_at(cell)
+	tile_grid.set(cell, new)
+	tile_changed.emit(cell, old, new)
 
 func get_block_at(cell: Vector2i) -> BAT.Blocks:
 	return block_grid.get(cell, BAT.Blocks.Generic)
@@ -87,6 +98,9 @@ func execute_block_movement(from: Vector2i, to: Vector2i) -> bool:
 		block_objects.set(to, block_object)
 		block_object.grid_position = to
 		block_object.on_push_success(to-from)
+		var tile = get_tile_at(to)
+		if tile: block_object.on_tile_entered(tile, to)
+		
 	
 	block_moved.emit(from, to, block_type)
 	
