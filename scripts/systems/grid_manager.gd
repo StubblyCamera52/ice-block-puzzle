@@ -2,24 +2,40 @@ extends Node
 
 var tile_grid: Dictionary[Vector2i, BAT.Tiles] = {}
 var block_grid: Dictionary[Vector2i, BAT.Blocks] = {}
-var tile_states: Dictionary[Vector2i, Dictionary] = {}
-var block_states: Dictionary[Vector2i, Dictionary] = {}
-var player_pos: Vector2i
+var block_objects: Dictionary[Vector2i, GenericBlock] = {}
+
 var grid_size: Vector2i = Vector2i(10, 10)
 
-signal block_moved(from: Vector2i, to: Vector2i, path: Array[Vector2i])
+signal block_moved(from: Vector2i, to: Vector2i, type: BAT.Blocks)
 signal tile_changed(cell: Vector2i, old: BAT.Tiles, new: BAT.Tiles)
-signal block_created(cell: Vector2i, type: BAT.Blocks)
-signal block_destroyed(cell: Vector2i)
-signal update_visual_grid(blocks: Dictionary[Vector2i, BAT.Blocks], tiles: Dictionary[Vector2i, BAT.Tiles])
+
+# utils
+func is_valid_cell(cell: Vector2i) -> bool:
+	return (cell.x >= 0 and cell.x < grid_size.x) and (cell.y >= 0 and cell.y < grid_size.y)
+
+func get_tile_at(cell: Vector2i) -> BAT.Tiles:
+	return tile_grid.get(cell, BAT.Tiles.Generic)
+
+func get_block_at(cell: Vector2i) -> BAT.Blocks:
+	return block_grid.get(cell, BAT.Blocks.Generic)
+
+func get_block_object_at(cell: Vector2i) -> GenericBlock:
+	return block_objects.get(cell)
+
+func is_position_blocked(cell: Vector2i) -> bool:
+	if not is_valid_cell(cell): return true
+	
+	var block_type = get_block_at(cell)
+	return BAT.BlockProperties.get(block_type)["collision"]
+
+func is_tile_walkable(cell: Vector2i) -> bool:
+	var tile_type = get_tile_at(cell)
+	return BAT.TileProperties.get(tile_type)["walkable"]
 
 func load_level_data(level_data: LevelData) -> void:
 	grid_size = level_data.grid_size
 	tile_grid = level_data.initial_tiles.duplicate()
 	block_grid = level_data.initial_blocks.duplicate()
-	player_pos = level_data.player_start_pos
-	tile_states.clear()
-	block_states.clear()
 	
 	# no unoccupied cells
 	for x in range(grid_size.x):
@@ -29,139 +45,123 @@ func load_level_data(level_data: LevelData) -> void:
 				tile_grid.set(cell, BAT.Tiles.Generic)
 			if not block_grid.has(cell):
 				block_grid.set(cell, BAT.Blocks.Air)
-	
-	block_grid.set(player_pos, BAT.Blocks.Player)
-	
-	update_visual_grid.emit(block_grid, tile_grid)
 
-func execute_move(move_data: Dictionary) -> bool:
-	var move_type = move_data.get("type", "")
-	var move_direction = move_data.get("direction", Vector2i.ZERO)
-	
-	match move_type:
-		"player_move":
-			return attempt_player_move(move_direction)
-		"player_push":
-			return attempt_push(player_pos+move_direction, move_direction)
-	
-	return false
 
-func attempt_player_move(move_direction: Vector2i) -> bool:
-	var target_cell = player_pos + move_direction
-	if not is_valid_cell(target_cell):
-		return false
+
+#movement
+
+func execute_block_movement(from: Vector2i, to: Vector2i) -> bool:
+	var block_type = get_block_at(from)
+	var block_object = get_block_object_at(from)
 	
-	var target_block = block_grid.get(target_cell, BAT.Blocks.Air)
-	var target_tile = tile_grid.get(target_cell, BAT.Tiles.Generic)
+	if block_type == BAT.Blocks.Air: return false
+	if not is_valid_cell(to) or is_position_blocked(to): return false
 	
-	if target_block != BAT.Blocks.Air:
-		if BAT.BlockProperties[target_block]["pushable"]:
-			if not attempt_push(target_cell, move_direction):
-				return false
-		else:
-			return false
+	block_grid.erase(from)
+	block_grid.set(to, block_type)
 	
-	if not BAT.TileProperties[target_tile]["walkable"]:
-		return false
+	if block_object:
+		block_objects.erase(from)
+		block_objects.set(to, block_object)
+		block_object.grid_position = to
 	
-	block_grid.set(player_pos, BAT.Blocks.Air)
-	player_pos = target_cell
-	block_grid.set(player_pos, BAT.Blocks.Player)
+	block_moved.emit(from, to, block_type)
 	
-	var tile_properties = BAT.TileProperties[target_tile]
-	if tile_properties["slide_behavior"] == BAT.SlideBehavior.SLIDE:
-		var slide_path = compute_slide_path(player_pos, move_direction, BAT.Blocks.Player)
-		if slide_path.size() > 0:
-			block_grid[player_pos] = BAT.Blocks.Air
-			player_pos = slide_path.back()
-			block_grid[player_pos] = BAT.Blocks.Player
-	
-	update_visual_grid.emit(block_grid, tile_grid)
 	return true
 
-func compute_slide_path(start_cell: Vector2i, direction: Vector2i, block_type: BAT.Blocks) -> Array[Vector2i]:
-	var max_slide_distance = BAT.BlockProperties[block_type]["max_slide_distance"]
-	var slide_direction = direction
-	var block_path: Array[Vector2i] = []
-	var current_cell = start_cell
+func execute_movement_sequence(path: Array[Dictionary]) -> bool:
+	#var backup_state = get_grid_state()
 	
-	for step in range(max_slide_distance):
-		var next_cell = current_cell + slide_direction
+	for movement in path:
+		var success = execute_block_movement(movement.from, movement.to)
+		if not success:
+			return false
+	
+	return true
+
+func attempt_player_movement(direction: Vector2i) -> bool:
+	var player_pos = get_player_pos()
+	var target_pos = get_next_position_in_direction(player_pos, direction)
+	
+	if not is_valid_cell(target_pos): return false
+	
+	var target_block = get_block_object_at(target_pos)
+	if target_block:
+		var push_success = target_block.attempt_push(direction)
+		if not push_success: return false
+	
+	if not is_tile_walkable(target_pos): return false
+	
+	var success = execute_block_movement(player_pos, target_pos)
+	
+	if success:
+		var player_object = get_block_object_at(target_pos)
+		if player_object and player_object.has_component("block_sliding"):
+			pass
+	
+	return success
+
+func get_player_pos() -> Vector2i:
+	for pos in block_grid.keys():
+		if block_grid[pos] == BAT.Blocks.Player: return pos
+	
+	return Vector2i(-1, -1)
+
+#pathing
+
+func get_next_position_in_direction(cell: Vector2i, direction: Vector2i) -> Vector2i:
+	return cell+direction
+
+func find_first_collision_in_direction(cell: Vector2i, direction: Vector2i, max_dist: int = 99) -> Vector2i:
+	var current_pos = cell
+	
+	for step in range(max_dist):
+		var next_pos = get_next_position_in_direction(current_pos, direction)
+		
+		if not is_valid_cell(next_pos) or is_position_blocked(next_pos):
+			return current_pos
+		
+		current_pos = next_pos
+	
+	return current_pos
+
+func trace_path_until_stopped(start: Vector2i, direction: Vector2i, block_type: BAT.Blocks) -> Array[Vector2i]:
+	var path: Array[Vector2i] = []
+	var current_cell = start
+	var current_direction = direction
+	var max_distance = BAT.BlockProperties[block_type]["max_slide_distance"]
+	
+	for step in range(max_distance):
+		var next_cell = get_next_position_in_direction(current_cell, current_direction)
 		
 		if not is_valid_cell(next_cell): break
+		if is_position_blocked(next_cell): break
 		
-		var next_cell_tile_type = tile_grid.get(next_cell, BAT.Tiles.Generic)
-		var next_cell_block_type = block_grid.get(next_cell, BAT.Blocks.Air)
-		
-		if (BAT.BlockProperties[next_cell_block_type]["collision"]):
-			handle_collision_effects(current_cell, next_cell, block_type, next_cell_block_type)
-			break
-		
-		block_path.append(next_cell)
+		path.append(next_cell)
 		current_cell = next_cell
 		
-		var next_cell_tile_properties =  BAT.TileProperties[next_cell_tile_type]
-		match next_cell_tile_properties["slide_behavior"]:
+		var tile_type = get_tile_at(next_cell)
+		var tile_properties = BAT.TileProperties[tile_type]
+		
+		match tile_properties["slide_behavior"]:
 			BAT.SlideBehavior.STOP:
 				break
 			BAT.SlideBehavior.SLIDE:
 				continue
 			BAT.SlideBehavior.DIRECTIONAL:
-				slide_direction = next_cell_tile_properties["slide_direction"]
+				current_direction = tile_properties["slide_direction"]
 			BAT.SlideBehavior.CONDITIONAL:
-				break
-		
-		handle_tile_effects(next_cell, block_type)
+				continue
 	
-	return block_path
+	return path
 
-func handle_collision_effects(source_cell: Vector2i, target_cell: Vector2i, source_block: BAT.Blocks, target_block: BAT.Blocks):
-	var source_properties = BAT.BlockProperties[source_block]
-	var target_properties = BAT.BlockProperties[target_block]
-	
-	if "explosive" in source_properties.get("effects", []):
-		return
-	
-	if "soft_stop" in target_properties.get("effects", []):
-		return
-	
-	return
+# state management (for undoing)
+func get_grid_state() -> Dictionary:
+	return {
+		"tiles": tile_grid.duplicate(),
+		"blocks": block_grid.duplicate(),
+	}
 
-func handle_tile_effects(cell: Vector2i, block_type: BAT.Blocks):
-	if not is_valid_cell(cell): return
-	var tile_type = tile_grid.get(cell, BAT.Tiles.Generic)
-	var tile_properties = BAT.TileProperties[tile_type]
-	var effects = tile_properties.get("effects", [])
-	
-	for effect in effects:
-		match effect:
-			"drownable":
-				if block_type == BAT.Blocks.Ice:
-					tile_grid.set(cell, BAT.Tiles.Ice)
-					block_grid.set(cell, BAT.Blocks.Air)
-					tile_changed.emit(cell, tile_type, BAT.Tiles.Ice)
-					block_destroyed.emit(cell)
-
-
-func attempt_push(cell: Vector2i, direction: Vector2i) -> bool:
-	var block_type = block_grid.get(cell)
-	var block_properties = BAT.BlockProperties.get(block_type)
-	
-	if !block_properties["pushable"]:
-		return false
-	
-	var block_path = compute_slide_path(cell, direction, block_type)
-	
-	if block_path.size() == 0:
-		return false
-	
-	#print(block_path)
-	
-	block_grid.set(cell, BAT.Blocks.Air)
-	block_grid.set(block_path.back(), block_type)
-	block_moved.emit(cell, block_path.back(), block_path)
-	#update_visual_grid.emit(block_grid, tile_grid)
-	return true
-
-func is_valid_cell(cell: Vector2i) -> bool:
-	return (cell.x >= 0 and cell.x < grid_size.x) and (cell.y >= 0 and cell.y < grid_size.y)
+func restore_state(state: Dictionary, player_pos: Vector2i):
+	tile_grid = state["tiles"].duplicate()
+	block_grid = state["blocks"].duplicate()
