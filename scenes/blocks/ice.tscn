@@ -1,9 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://bg3ij6fnsyuuo"]
 
-[ext_resource type="Script" uid="uid://7chgwltncq0y" path="res://scenes/blocks/scripts/ice.gd" id="1_kmuj2"]
-[ext_resource type="PackedScene" uid="uid://bkscijne6u0d4" path="res://assets/models/blocks/Block_ICE.glb" id="1_qpmue"]
+[ext_resource type="Script" uid="uid://cecyg40v3qdap" path="res://scenes/blocks/scripts/block_renderer.gd" id="1_qpmue"]
+[ext_resource type="PackedScene" uid="uid://bkscijne6u0d4" path="res://assets/models/blocks/Block_ICE.glb" id="2_kmuj2"]
 
 [node name="Ice" type="Node3D"]
-script = ExtResource("1_kmuj2")
+script = ExtResource("1_qpmue")
+metadata/_custom_type_script = "uid://cecyg40v3qdap"
 
-[node name="Block_ICE" parent="." instance=ExtResource("1_qpmue")]
+[node name="Block_ICE" parent="." instance=ExtResource("2_kmuj2")]

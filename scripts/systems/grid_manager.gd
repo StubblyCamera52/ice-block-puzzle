@@ -6,8 +6,26 @@ var block_objects: Dictionary[Vector2i, GenericBlock] = {}
 
 var grid_size: Vector2i = Vector2i(10, 10)
 
+
+signal block_created(cell: Vector2i, block_obj: GenericBlock)
 signal block_moved(from: Vector2i, to: Vector2i, type: BAT.Blocks)
 signal tile_changed(cell: Vector2i, old: BAT.Tiles, new: BAT.Tiles)
+signal update_visual_grid(block_grid: Dictionary, tile_grid: Dictionary)
+
+# object tracking
+
+func create_block_at(cell: Vector2i, block_type: BAT.Blocks) -> GenericBlock:
+	var block_object: GenericBlock
+	
+	match block_type:
+		BAT.Blocks.Ice: block_object = IceBlock.new(cell, block_type)
+		BAT.Blocks.Player: block_object = PlayerBlock.new(cell, block_type)
+	
+	block_object._ready()
+	block_created.emit(cell, block_object)
+	return block_object
+
+
 
 # utils
 func is_valid_cell(cell: Vector2i) -> bool:
@@ -33,9 +51,14 @@ func is_tile_walkable(cell: Vector2i) -> bool:
 	return BAT.TileProperties.get(tile_type)["walkable"]
 
 func load_level_data(level_data: LevelData) -> void:
+	block_grid.clear()
+	tile_grid.clear()
 	grid_size = level_data.grid_size
 	tile_grid = level_data.initial_tiles.duplicate()
 	block_grid = level_data.initial_blocks.duplicate()
+	
+	for cell in block_grid:
+		block_objects.set(cell, create_block_at(cell, block_grid[cell]))
 	
 	# no unoccupied cells
 	for x in range(grid_size.x):
@@ -45,7 +68,8 @@ func load_level_data(level_data: LevelData) -> void:
 				tile_grid.set(cell, BAT.Tiles.Generic)
 			if not block_grid.has(cell):
 				block_grid.set(cell, BAT.Blocks.Air)
-
+	update_visual_grid.emit(block_grid, tile_grid)
+	
 
 
 #movement
@@ -64,6 +88,7 @@ func execute_block_movement(from: Vector2i, to: Vector2i) -> bool:
 		block_objects.erase(from)
 		block_objects.set(to, block_object)
 		block_object.grid_position = to
+		block_object.on_push_success(to-from)
 	
 	block_moved.emit(from, to, block_type)
 	
@@ -94,11 +119,6 @@ func attempt_player_movement(direction: Vector2i) -> bool:
 	
 	var success = execute_block_movement(player_pos, target_pos)
 	
-	if success:
-		var player_object = get_block_object_at(target_pos)
-		if player_object and player_object.has_component("block_sliding"):
-			pass
-	
 	return success
 
 func get_player_pos() -> Vector2i:
@@ -106,6 +126,18 @@ func get_player_pos() -> Vector2i:
 		if block_grid[pos] == BAT.Blocks.Player: return pos
 	
 	return Vector2i(-1, -1)
+
+func execute_move(move_data: Dictionary) -> bool:
+	match move_data.get("type", ""):
+		"player_push":
+			var target_cell = get_player_pos()+move_data.get("direction") as Vector2i
+			if not is_valid_cell(target_cell): return false
+			var target_block = get_block_object_at(target_cell) as GenericBlock
+			var success = target_block.attempt_push(move_data.get("direction", Vector2i(0, 1)))
+			return success
+		_:
+			return false
+
 
 #pathing
 

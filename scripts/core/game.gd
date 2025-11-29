@@ -11,9 +11,17 @@ var input_allowed: bool = true
 signal level_started()
 signal level_completed()
 
+var test_level: LevelData
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	test_level = LevelData.new()
+	test_level.level_id = "test00"
+	test_level.level_number = 0
+	test_level.initial_blocks = {Vector2i(0, 0): BAT.Blocks.Player}
 	GameStateManager.level_completed.connect(on_level_completed)
+	await get_tree().process_frame
+	start_level("test00")
 	
 
 func _unhandled_key_input(event: InputEvent) -> void:
@@ -61,11 +69,13 @@ func restart_level():
 		GameStateManager.load_level(GameStateManager.current_level)
 
 func start_level(level_id: String):
-	pass
+	GameStateManager.load_level(test_level)
+	level_started.emit()
 
 func on_level_completed():
 	input_allowed = false
 	print("complete")
+	level_completed.emit()
 
 func enable_input():
 	input_allowed = true

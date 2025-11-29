@@ -16,6 +16,7 @@ class GameStateSnapshot:
 func load_level(level_data: LevelData):
 	current_level = level_data
 	move_history.clear()
+	GridManager.load_level_data(level_data)
 
 func execute_move(move_data: Dictionary):
 	save_state_snapshot()
