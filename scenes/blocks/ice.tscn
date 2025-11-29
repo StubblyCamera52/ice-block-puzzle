@@ -8,3 +8,4 @@ script = ExtResource("1_qpmue")
 metadata/_custom_type_script = "uid://cecyg40v3qdap"
 
 [node name="Block_ICE" parent="." instance=ExtResource("2_kmuj2")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.51, 0)

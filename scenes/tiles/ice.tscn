@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cb6kenkub48vk"]
+
+[ext_resource type="Script" uid="uid://ci0734pdcj4f6" path="res://scenes/tiles/scripts/generic.gd" id="1_md4ky"]
+[ext_resource type="PackedScene" uid="uid://deq7w1iemwc35" path="res://assets/models/tiles/Tile_ICE.glb" id="2_jl1w6"]
+
+[node name="Ice" type="Node3D"]
+script = ExtResource("1_md4ky")
+metadata/_custom_type_script = "uid://ci0734pdcj4f6"
+
+[node name="Tile_ICE" parent="." instance=ExtResource("2_jl1w6")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)

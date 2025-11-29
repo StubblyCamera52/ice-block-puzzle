@@ -19,7 +19,7 @@ func load_level(level_data: LevelData):
 	GridManager.load_level_data(level_data)
 
 func execute_move(move_data: Dictionary):
-	save_state_snapshot()
+	#save_state_snapshot()
 	var success = GridManager.execute_move(move_data)
 	
 	if success: check_goals()

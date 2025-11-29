@@ -65,12 +65,10 @@ func load_level_data(level_data: LevelData) -> void:
 		for y in range(grid_size.y):
 			var cell = Vector2i(x, y)
 			if not tile_grid.has(cell):
-				tile_grid.set(cell, BAT.Tiles.Generic)
+				tile_grid.set(cell, BAT.Tiles.Stone)
 			if not block_grid.has(cell):
 				block_grid.set(cell, BAT.Blocks.Air)
 	update_visual_grid.emit(block_grid, tile_grid)
-	
-
 
 #movement
 
@@ -106,18 +104,20 @@ func execute_movement_sequence(path: Array[Dictionary]) -> bool:
 
 func attempt_player_movement(direction: Vector2i) -> bool:
 	var player_pos = get_player_pos()
+	var player_obj = get_block_object_at(player_pos)
+	if not player_obj: return false
 	var target_pos = get_next_position_in_direction(player_pos, direction)
 	
 	if not is_valid_cell(target_pos): return false
+	if not is_tile_walkable(target_pos): return false
 	
 	var target_block = get_block_object_at(target_pos)
 	if target_block:
 		var push_success = target_block.attempt_push(direction)
 		if not push_success: return false
 	
-	if not is_tile_walkable(target_pos): return false
 	
-	var success = execute_block_movement(player_pos, target_pos)
+	var success = player_obj.attempt_push(direction)
 	
 	return success
 
@@ -128,13 +128,17 @@ func get_player_pos() -> Vector2i:
 	return Vector2i(-1, -1)
 
 func execute_move(move_data: Dictionary) -> bool:
+	print(move_data)
 	match move_data.get("type", ""):
 		"player_push":
 			var target_cell = get_player_pos()+move_data.get("direction") as Vector2i
 			if not is_valid_cell(target_cell): return false
 			var target_block = get_block_object_at(target_cell) as GenericBlock
+			if not is_instance_valid(target_block): return false
 			var success = target_block.attempt_push(move_data.get("direction", Vector2i(0, 1)))
 			return success
+		"player_move":
+			return attempt_player_movement(move_data.get("direction", Vector2i(0, 1)))
 		_:
 			return false
 

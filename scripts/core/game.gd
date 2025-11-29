@@ -3,8 +3,6 @@ extends Node3D
 
 var player_facing_direction: Vector2i = Vector2.RIGHT
 
-var input_allowed: bool = true
-
 @onready var UIManager = $UIManager
 @onready var camera: Camera3D = $Camera3D
 
@@ -18,14 +16,19 @@ func _ready() -> void:
 	test_level = LevelData.new()
 	test_level.level_id = "test00"
 	test_level.level_number = 0
-	test_level.initial_blocks = {Vector2i(0, 0): BAT.Blocks.Player}
+	for i in range(10*10):
+		if randf() > 0.5:
+			test_level.initial_tiles.set(Vector2i(i%10, floor(i/10)), BAT.Tiles.Stone)
+		else:
+			test_level.initial_tiles.set(Vector2i(i%10, floor(i/10)), BAT.Tiles.Ice)
+	test_level.initial_blocks = {Vector2i(0, 0): BAT.Blocks.Player, Vector2i(2, 2): BAT.Blocks.Ice}
 	GameStateManager.level_completed.connect(on_level_completed)
 	await get_tree().process_frame
 	start_level("test00")
 	
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	if not input_allowed: return
+	if not Globals.input_enabled: return
 	
 	var direction = Vector2i.ZERO
 	var action_type = ""
@@ -72,14 +75,7 @@ func start_level(level_id: String):
 	GameStateManager.load_level(test_level)
 	level_started.emit()
 
-func on_level_completed():
-	input_allowed = false
+func on_level_completed(level_data: LevelData):
+	Globals.set_input_disabled()
 	print("complete")
 	level_completed.emit()
-
-func enable_input():
-	input_allowed = true
-
-
-func disable_input():
-	input_allowed = false

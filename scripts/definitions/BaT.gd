@@ -46,7 +46,7 @@ enum BlockState {
 
 const TileProperties := {
 	Tiles.Generic: {
-		"walkable": false,
+		"walkable": true,
 		"slide_behavior": SlideBehavior.STOP,
 		"slide_direction": Vector2i(0, 0), # 0, 0 means keep going in the direction its already going
 		"effects": []
@@ -109,6 +109,13 @@ const TileProperties := {
 }
 
 const BlockProperties := {
+	Blocks.Generic: {
+		"collision": false,
+		"pushable": false,
+		"max_slide_distance": 0,
+		"slide_on_ice": false,
+		"abilities": [],
+	},
 	Blocks.Air: {
 		"collision": false,
 		"pushable": false,

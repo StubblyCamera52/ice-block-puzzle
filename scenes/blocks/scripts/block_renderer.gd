@@ -30,5 +30,5 @@ func animate_slide_path(world_path: Array[Vector3]):
 
 func animate_single_step(to: Vector3):
 	var step_tween = create_tween()
-	step_tween.tween_property(self, "position", to, 0.2)
+	step_tween.tween_property(self, "position", to, 0.1)
 	step_tween.tween_callback(func(): step_animation_finished.emit())
