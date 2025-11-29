@@ -28,6 +28,8 @@ class LevelGoal extends Resource:
 			Type.ACTIVATE_SWITCHES:
 				return false
 			Type.REACH_EXIT:
+				if GridManager.get_player_pos().length() == target_positions[0].length():
+					return true
 				return false
 			Type.REFLECT_BEAMS:
 				return false

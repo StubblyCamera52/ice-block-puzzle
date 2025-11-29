@@ -6,12 +6,14 @@ var active_tiles: Dictionary[Vector2i, GenericTile] = {}
 
 const tile_models := {
 	BAT.Tiles.Generic: preload("res://scenes/tiles/generic.tscn"),
-	BAT.Tiles.Stone: preload("res://scenes/tiles/stone.tscn")
+	BAT.Tiles.Stone: preload("res://scenes/tiles/stone.tscn"),
+	BAT.Tiles.Ice: preload("res://scenes/tiles/ice.tscn"),
+	BAT.Tiles.Water: preload("res://scenes/tiles/water.tscn"),
 }
 
 const block_models := {
 	BAT.Blocks.Ice: preload("res://scenes/blocks/ice.tscn"),
-	BAT.Blocks.Player: preload("res://scenes/blocks/player.tscn")
+	BAT.Blocks.Player: preload("res://scenes/blocks/player.tscn"),
 }
 
 func _ready() -> void:

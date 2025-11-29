@@ -16,6 +16,11 @@ func _ready() -> void:
 	test_level = LevelData.new()
 	test_level.level_id = "test00"
 	test_level.level_number = 0
+	var goal = LevelData.LevelGoal.new()
+	goal.goal_type = LevelData.LevelGoal.Type.REACH_EXIT
+	goal.target_count = 1
+	goal.target_positions.append(Vector2i(9, 9))
+	test_level.goals.append(goal)
 	for i in range(10*10):
 		if randf() > 0.5:
 			test_level.initial_tiles.set(Vector2i(i%10, floor(i/10)), BAT.Tiles.Stone)
@@ -77,5 +82,6 @@ func start_level(level_id: String):
 
 func on_level_completed(level_data: LevelData):
 	Globals.set_input_disabled()
+	Globals.lock()
 	print("complete")
 	level_completed.emit()

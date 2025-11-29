@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://b1lwi3spy01cx"]
+
+[ext_resource type="Script" uid="uid://ci0734pdcj4f6" path="res://scenes/tiles/scripts/generic.gd" id="1_2gcvr"]
+[ext_resource type="Shader" uid="uid://cxtp7fpon3kaj" path="res://scenes/tiles/scripts/water.tres" id="2_2xb7p"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2gcvr"]
+render_priority = 0
+shader = ExtResource("2_2xb7p")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_5vkiu"]
+material = SubResource("ShaderMaterial_2gcvr")
+size = Vector2(1, 1)
+subdivide_width = 2
+subdivide_depth = 2
+
+[node name="Water" type="Node3D"]
+script = ExtResource("1_2gcvr")
+metadata/_custom_type_script = "uid://ci0734pdcj4f6"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_5vkiu")

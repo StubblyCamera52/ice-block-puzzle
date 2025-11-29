@@ -43,7 +43,7 @@ func start_slide_animation(path: Array[Vector2i]):
 		return
 	
 	is_moving = true
-	Globals.input_enabled = false
+	Globals.set_input_disabled()
 	var world_path: Array[Vector3] = []
 	
 	for cell in path:
@@ -53,17 +53,17 @@ func start_slide_animation(path: Array[Vector2i]):
 	await visual_node.slide_animation_finished
 	
 	is_moving = false
-	Globals.input_enabled = true
+	Globals.set_input_enabled()
 	animation_finished.emit()
 
 func animate_single_step(to: Vector2i):
 	if not visual_node: return
 	
-	Globals.input_enabled = false
+	Globals.set_input_disabled()
 	var to_3 = Vector3(to.x, 0.1, to.y)
 	visual_node.animate_single_step(to_3)
 	await visual_node.step_animation_finished
-	Globals.input_enabled = true
+	Globals.set_input_enabled()
 	step_animation_finished.emit()
 
 func attempt_push(direction: Vector2i) -> bool:
