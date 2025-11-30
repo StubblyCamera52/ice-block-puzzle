@@ -22,6 +22,7 @@ BAT="*res://scripts/definitions/BaT.gd"
 GameStateManager="*res://scripts/systems/game_state_manager.gd"
 ComponentSystem="*res://scripts/systems/blockcomponents/blockcomponent.gd"
 Globals="*res://scripts/core/globals.gd"
+Levels="*res://assets/levels.gd"
 
 [editor_plugins]
 

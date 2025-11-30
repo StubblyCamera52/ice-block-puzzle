@@ -9,28 +9,11 @@ var player_facing_direction: Vector2i = Vector2.RIGHT
 signal level_started()
 signal level_completed()
 
-var test_level: LevelData
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	test_level = LevelData.new()
-	test_level.level_id = "test00"
-	test_level.level_number = 0
-	var goal = LevelData.LevelGoal.new()
-	goal.goal_type = LevelData.LevelGoal.Type.REACH_EXIT
-	goal.target_count = 1
-	goal.target_positions.append(Vector2i(9, 9))
-	test_level.goals.append(goal)
-	for i in range(10*10):
-		if randf() > 0.5:
-			test_level.initial_tiles.set(Vector2i(i%10, floor(i/10)), BAT.Tiles.Stone)
-		else:
-			test_level.initial_tiles.set(Vector2i(i%10, floor(i/10)), BAT.Tiles.Ice)
-	test_level.initial_blocks = {Vector2i(0, 0): BAT.Blocks.Player, Vector2i(2, 2): BAT.Blocks.Ice}
 	GameStateManager.level_completed.connect(on_level_completed)
 	await get_tree().process_frame
 	start_level("test00")
-	GridManager.set_tile_at(Vector2i(9, 9), BAT.Tiles.Water)
 	
 
 func _unhandled_key_input(event: InputEvent) -> void:
@@ -78,7 +61,7 @@ func restart_level():
 		GameStateManager.load_level(GameStateManager.current_level)
 
 func start_level(level_id: String):
-	GameStateManager.load_level(test_level)
+	GameStateManager.load_level(Levels.parse_level_string(Levels.testlevel00))
 	level_started.emit()
 
 func on_level_completed(level_data: LevelData):
