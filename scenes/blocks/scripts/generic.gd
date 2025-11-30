@@ -49,11 +49,13 @@ func start_slide_animation(path: Array[Vector2i]):
 	for cell in path:
 		world_path.append(Vector3(cell.x, 0.1, cell.y))
 	
+	component_manager.call_on_all("on_slide_start", [path.back()-grid_position])
 	visual_node.animate_slide_path(world_path)
 	await visual_node.slide_animation_finished
 	
 	is_moving = false
 	Globals.set_input_enabled()
+	component_manager.call_on_all("on_slide_stop", [path.back()])
 	animation_finished.emit()
 
 func animate_single_step(to: Vector2i):
@@ -61,10 +63,12 @@ func animate_single_step(to: Vector2i):
 	
 	Globals.set_input_disabled()
 	var to_3 = Vector3(to.x, 0.1, to.y)
+	component_manager.call_on_all("on_slide_start", [to-grid_position])
 	visual_node.animate_single_step(to_3)
 	await visual_node.step_animation_finished
 	Globals.set_input_enabled()
 	step_animation_finished.emit()
+	component_manager.call_on_all("on_slide_stop", [to])
 
 func attempt_push(direction: Vector2i) -> bool:
 	var results = component_manager.call_on_all("on_push_attempt", [direction])

@@ -9,6 +9,7 @@ const tile_models := {
 	BAT.Tiles.Stone: preload("res://scenes/tiles/stone.tscn"),
 	BAT.Tiles.Ice: preload("res://scenes/tiles/ice.tscn"),
 	BAT.Tiles.Water: preload("res://scenes/tiles/water.tscn"),
+	BAT.Tiles.Hole: preload("res://scenes/tiles/hole.tscn")
 }
 
 const block_models := {

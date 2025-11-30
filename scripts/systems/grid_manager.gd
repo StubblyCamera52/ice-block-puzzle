@@ -20,6 +20,7 @@ func create_block_at(cell: Vector2i, block_type: BAT.Blocks) -> GenericBlock:
 	match block_type:
 		BAT.Blocks.Ice: block_object = IceBlock.new(cell, block_type)
 		BAT.Blocks.Player: block_object = PlayerBlock.new(cell, block_type)
+		BAT.Blocks.InvisibleBlocking: block_object = InvisBlocking.new(cell, block_type)
 	
 	block_object._ready()
 	block_created.emit(cell, block_object)

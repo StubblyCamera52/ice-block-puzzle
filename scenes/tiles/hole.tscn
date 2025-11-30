@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://c15o71rab08oh"]
+
+[ext_resource type="Script" uid="uid://ci0734pdcj4f6" path="res://scenes/tiles/scripts/generic.gd" id="1_t0apo"]
+
+[node name="Hole" type="Node3D"]
+script = ExtResource("1_t0apo")
+metadata/_custom_type_script = "uid://ci0734pdcj4f6"

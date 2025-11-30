@@ -61,7 +61,10 @@ func restart_level():
 		GameStateManager.load_level(GameStateManager.current_level)
 
 func start_level(level_id: String):
-	GameStateManager.load_level(Levels.parse_level_string(Levels.testlevel00))
+	var level = Levels.parse_level_string(Levels.testlevel00)
+	if not level: return
+	$Camera3D.position = Vector3((level.grid_size.x/2)-0.5, 5.0, level.grid_size.y+1)
+	GameStateManager.load_level(level)
 	level_started.emit()
 
 func on_level_completed(level_data: LevelData):

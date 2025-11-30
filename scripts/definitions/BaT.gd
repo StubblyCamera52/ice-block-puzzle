@@ -12,7 +12,8 @@ enum Blocks {
 	Wall,
 	Melting,
 	IceMirror,
-	FrozenBomb
+	FrozenBomb,
+	InvisibleBlocking
 }
 
 enum Tiles {
@@ -181,4 +182,10 @@ const BlockProperties := {
 		"abilities": ["explosive"],
 		"explosion_radius": 1
 	},
+	Blocks.InvisibleBlocking: {
+		"collision": true,
+		"pushable": false,
+		"max_slide_distance": 0,
+		"slide_on_ice": false,
+	}
 }
