@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://muohp4qbqdvs"]
+[gd_scene load_steps=11 format=3 uid="uid://muohp4qbqdvs"]
 
 [ext_resource type="Script" uid="uid://ch1ii50onvhap" path="res://scripts/core/game.gd" id="1_e2o6t"]
 [ext_resource type="PackedScene" uid="uid://dscvgi5mxbxwv" path="res://scenes/core/grid_renderer.tscn" id="2_feb5d"]
 [ext_resource type="Script" uid="uid://s6a4rmfcx3sc" path="res://scripts/systems/ui_manager.gd" id="3_feb5d"]
+[ext_resource type="Texture2D" uid="uid://cf1wj628b1aua" path="res://assets/textures/snow01.png" id="4_fc0e3"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e2o6t"]
 sky_top_color = Color(1, 1, 1, 1)
@@ -20,6 +21,20 @@ tonemap_mode = 3
 fog_mode = 1
 fog_density = 1.0
 
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_fc0e3"]
+exposure_multiplier = 0.57
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_feb5d"]
+albedo_color = Color(0.7708395, 0.77083945, 0.77083945, 1)
+albedo_texture = ExtResource("4_fc0e3")
+emission_enabled = true
+emission = Color(0.30507714, 0.30507714, 0.30507714, 1)
+uv1_scale = Vector3(10, 10, 10)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_fc0e3"]
+material = SubResource("StandardMaterial3D_feb5d")
+size = Vector2(100, 100)
+
 [node name="Game" type="Node3D"]
 script = ExtResource("1_e2o6t")
 
@@ -28,15 +43,21 @@ environment = SubResource("Environment_fc0e3")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.3420201, 0.6152551, -0.7102699, 0, 0.7558535, 0.6547408, 0.9396926, -0.22393452, 0.2585171, 0, 0, 0)
-light_color = Color(0.5033745, 0.5033746, 0.5033746, 1)
+light_color = Color(0.5790201, 0.57902014, 0.57902014, 1)
+light_indirect_energy = 0.5
 shadow_enabled = true
 
 [node name="GridRenderer" parent="." instance=ExtResource("2_feb5d")]
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, 4.5, 5, 9)
+attributes = SubResource("CameraAttributesPractical_fc0e3")
 
 [node name="UIManager" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("3_feb5d")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0219393, -1, 0)
+mesh = SubResource("PlaneMesh_fc0e3")

@@ -40,7 +40,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_action_pressed("undo"):
 		pass
 	if event.is_action_pressed("restart"):
-		pass
+		restart_level()
+		return
 	
 	if direction != Vector2i.ZERO:
 		player_facing_direction = direction
@@ -61,9 +62,9 @@ func restart_level():
 		GameStateManager.load_level(GameStateManager.current_level)
 
 func start_level(level_id: String):
-	var level = Levels.parse_level_string(Levels.testlevel00)
+	var level = Levels.parse_level_string(Levels.level01)
 	if not level: return
-	$Camera3D.position = Vector3((level.grid_size.x/2)-0.5, 5.0, level.grid_size.y+1)
+	$Camera3D.position = Vector3((level.grid_size.x/2), 5.0, level.grid_size.y+1)
 	GameStateManager.load_level(level)
 	level_started.emit()
 

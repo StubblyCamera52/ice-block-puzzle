@@ -66,6 +66,10 @@ func load_level_data(level_data: LevelData) -> void:
 	block_grid.clear()
 	tile_grid.clear()
 	grid_size = level_data.grid_size
+	for obj in block_objects.values():
+		if is_instance_valid(obj.visual_node):
+			obj.visual_node.queue_free()
+	block_objects.clear()
 	tile_grid = level_data.initial_tiles.duplicate()
 	block_grid = level_data.initial_blocks.duplicate()
 	

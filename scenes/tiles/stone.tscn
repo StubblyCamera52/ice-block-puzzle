@@ -1,12 +1,12 @@
 [gd_scene load_steps=3 format=3 uid="uid://b08fugwy7sthb"]
 
 [ext_resource type="Script" uid="uid://ci0734pdcj4f6" path="res://scenes/tiles/scripts/generic.gd" id="1_3qrb7"]
-[ext_resource type="PackedScene" uid="uid://dr6el7b8frlmt" path="res://assets/models/tiles/Tile_STONE.glb" id="2_cbxql"]
+[ext_resource type="PackedScene" uid="uid://ccdwajthlx2ef" path="res://assets/models/tiles/tile_stone.tscn" id="2_cbxql"]
 
 [node name="Stone" type="Node3D"]
 script = ExtResource("1_3qrb7")
 TileType = 2
 metadata/_custom_type_script = "uid://ci0734pdcj4f6"
 
-[node name="Tile_STONE" parent="." instance=ExtResource("2_cbxql")]
+[node name="Tile_STONE2" parent="." instance=ExtResource("2_cbxql")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
