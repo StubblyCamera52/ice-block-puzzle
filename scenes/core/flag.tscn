@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://dct8vxnxoj27c"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qh1wc"]
+albedo_color = Color(0.2903535, 0.2903535, 0.29035345, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rnc2w"]
+material = SubResource("StandardMaterial3D_qh1wc")
+size = Vector3(0.05, 0.5, 0.05)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v10r7"]
+albedo_color = Color(1.5498103e-05, 0.62366664, 0.09729334, 1)
+
+[sub_resource type="PrismMesh" id="PrismMesh_fw88t"]
+material = SubResource("StandardMaterial3D_v10r7")
+size = Vector3(0.5, 0.5, 0.05)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.0039922, 0, 0, 0, 1.0039922, 0, 0, 0, 1.0039922, -0.00019892678, 0.24511713, 0)
+mesh = SubResource("BoxMesh_rnc2w")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.3885894e-08, 1.0039922, 0, -1.0039922, -4.3885894e-08, 0, 0, 0, 1.0039922, 0.2276144, 0.69849455, 0)
+mesh = SubResource("PrismMesh_fw88t")
