@@ -12,3 +12,6 @@ push ice blocks into water to turn the water into ice
 wasd to move  
 space to push (walking into block also pushes it)  
 H to reset  
+
+
+currently their is only 3 levels because i fell asleep on sunday and didnt have time to make more :( but i plan on continuing work on this game this week so I will add more soon
