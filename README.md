@@ -8,3 +8,7 @@ Made in godot
 ## instructions:
 get to the goal  
 push ice blocks into water to turn the water into ice  
+
+wasd to move  
+space to push (walking into block also pushes it)  
+H to reset  
