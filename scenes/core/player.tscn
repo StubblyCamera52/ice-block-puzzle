@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bei47pkxr2yuw"]
+
+[ext_resource type="Script" uid="uid://ft3jg1f1v7tc" path="res://scenes/core/player.gd" id="1_kr2ts"]
+[ext_resource type="PackedScene" uid="uid://dxtp66bdq01cd" path="res://assets/models/player.glb" id="1_vl3sy"]
+
+[node name="Player" type="Node3D"]
+script = ExtResource("1_kr2ts")
+waddle_speed = null
+
+[node name="e" type="Node3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+
+[node name="player" parent="e" instance=ExtResource("1_vl3sy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.58839035, 1.8877449, 9.653467)

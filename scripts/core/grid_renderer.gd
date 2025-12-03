@@ -14,7 +14,6 @@ const tile_models := {
 
 const block_models := {
 	BAT.Blocks.Ice: preload("res://scenes/blocks/ice.tscn"),
-	BAT.Blocks.Player: preload("res://scenes/blocks/player.tscn"),
 }
 
 func _ready() -> void:

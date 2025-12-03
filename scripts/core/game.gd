@@ -15,48 +15,6 @@ func _ready() -> void:
 	GameStateManager.level_completed.connect(on_level_completed)
 	await get_tree().process_frame
 	start_level("level00")
-	
-
-func _unhandled_key_input(event: InputEvent) -> void:
-	if not Globals.input_enabled: return
-	
-	var direction = Vector2i.ZERO
-	var action_type = ""
-	
-	if event.is_action_pressed("down"):
-		direction = Vector2i(0, 1)
-		action_type = "move"
-	if event.is_action_pressed("up"):
-		direction = Vector2i(0, -1)
-		action_type = "move"
-	if event.is_action_pressed("left"):
-		direction = Vector2i(-1, 0)
-		action_type = "move"
-	if event.is_action_pressed("right"):
-		direction = Vector2i(1, 0)
-		action_type = "move"
-	if event.is_action_pressed("push"):
-		direction = player_facing_direction
-		action_type = "push"
-	if event.is_action_pressed("undo"):
-		pass
-	if event.is_action_pressed("restart"):
-		restart_level()
-		return
-	
-	if direction != Vector2i.ZERO:
-		player_facing_direction = direction
-		execute_move(action_type, direction)
-		
-
-func execute_move(action_type: String, direction: Vector2i):
-	var move_data = {
-		"type": "player_"+action_type,
-		"direction": direction
-	}
-	
-	#var success = GameStateManager.execute_move(move_data)
-	GameStateManager.execute_move(move_data)
 
 func restart_level():
 	if GameStateManager.current_level:
@@ -75,6 +33,7 @@ func start_level(level_id: String):
 	var end_pos = level.goals[0].target_positions[0]
 	flag.position = Vector3(end_pos.x, 0.1, end_pos.y)
 	GameStateManager.load_level(level)
+	$Player.collision_grid.rebuildGrid()
 	level_started.emit()
 
 func on_level_completed(level_data: LevelData):

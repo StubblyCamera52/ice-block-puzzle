@@ -9,7 +9,7 @@ extends Node
 # tiles
 # .  =stone, _ = hole, w = water, i = ice
 # blocks
-# P = player, I = ice, . = nothing (air?), # = invisblocking
+# I = ice, . = nothing (air?), # = invisblocking
 
 
 func parse_level_string(level_string: String) -> LevelData:
@@ -43,7 +43,6 @@ func parse_level_string(level_string: String) -> LevelData:
 		for cellx in range(0, data.grid_size.x):
 			match block_row.get(cellx):
 				".": continue
-				"P": data.initial_blocks.set(Vector2i(cellx, y), BAT.Blocks.Player)
 				"I": data.initial_blocks.set(Vector2i(cellx, y), BAT.Blocks.Ice)
 				"#": data.initial_blocks.set(Vector2i(cellx, y), BAT.Blocks.InvisibleBlocking)
 				_: continue
@@ -63,14 +62,14 @@ func parse_level_string(level_string: String) -> LevelData:
 	return data
 
 const testlevel00 = """LEVEL_DEF
-testlevel00|4|4
+testlevel00|4|4|0|0
 TILE_DEF
 ..__
 _.__
 _.__
 _..w
 BLOCK_DEF
-P...
+....
 ....
 ....
 ..I.
@@ -86,7 +85,7 @@ _.__
 _.__
 _..w
 BLOCK_DEF
-P...
+....
 ....
 ....
 ..I.
@@ -105,7 +104,7 @@ ___._
 BLOCK_DEF
 .....
 ....I
-PI...
+.I...
 ###.#
 .....
 GOAL_DEF
@@ -125,7 +124,7 @@ TILE_DEF
 ........
 ........
 BLOCK_DEF
-P.......
+........
 ........
 ........
 .I..####

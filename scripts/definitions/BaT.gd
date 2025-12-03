@@ -7,7 +7,6 @@ enum Blocks {
 	Air,
 	Ice,
 	Snow,
-	Player,
 	Heavy,
 	Wall,
 	Melting,
@@ -130,13 +129,6 @@ const BlockProperties := {
 		"max_slide_distance": 99,
 		"slide_on_ice": true,
 		"abilities": ["fill_holes"],
-	},
-	Blocks.Player: {
-		"collision": true,
-		"pushable": false,
-		"max_slide_distance": 1,
-		"slide_on_ice": true,
-		"abilities": ["push_blocks"],
 	},
 	Blocks.Snow: {
 		"collision": true,

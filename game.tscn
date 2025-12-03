@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://muohp4qbqdvs"]
+[gd_scene load_steps=13 format=3 uid="uid://muohp4qbqdvs"]
 
 [ext_resource type="Script" uid="uid://ch1ii50onvhap" path="res://scripts/core/game.gd" id="1_e2o6t"]
 [ext_resource type="PackedScene" uid="uid://dscvgi5mxbxwv" path="res://scenes/core/grid_renderer.tscn" id="2_feb5d"]
 [ext_resource type="Script" uid="uid://s6a4rmfcx3sc" path="res://scripts/systems/ui_manager.gd" id="3_feb5d"]
 [ext_resource type="Texture2D" uid="uid://cf1wj628b1aua" path="res://assets/textures/snow01.png" id="4_fc0e3"]
 [ext_resource type="PackedScene" uid="uid://dct8vxnxoj27c" path="res://scenes/core/flag.tscn" id="5_7jktm"]
+[ext_resource type="PackedScene" uid="uid://bei47pkxr2yuw" path="res://scenes/core/player.tscn" id="6_ryrav"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e2o6t"]
 sky_top_color = Color(1, 1, 1, 1)
@@ -49,6 +50,7 @@ light_indirect_energy = 0.5
 shadow_enabled = true
 
 [node name="GridRenderer" parent="." instance=ExtResource("2_feb5d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, 4.5, 5, 9)
@@ -65,3 +67,6 @@ mesh = SubResource("PlaneMesh_fc0e3")
 
 [node name="flag" parent="." instance=ExtResource("5_7jktm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.553285, 0)
+
+[node name="Player" parent="." instance=ExtResource("6_ryrav")]
+waddle_speed = 2.5

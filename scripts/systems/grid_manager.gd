@@ -19,7 +19,6 @@ func create_block_at(cell: Vector2i, block_type: BAT.Blocks) -> GenericBlock:
 	
 	match block_type:
 		BAT.Blocks.Ice: block_object = IceBlock.new(cell, block_type)
-		BAT.Blocks.Player: block_object = PlayerBlock.new(cell, block_type)
 		BAT.Blocks.InvisibleBlocking: block_object = InvisBlocking.new(cell, block_type)
 	
 	block_object._ready()
@@ -120,46 +119,6 @@ func execute_movement_sequence(path: Array[Dictionary]) -> bool:
 			return false
 	
 	return true
-
-func attempt_player_movement(direction: Vector2i) -> bool:
-	var player_pos = get_player_pos()
-	var player_obj = get_block_object_at(player_pos)
-	if not player_obj: return false
-	var target_pos = get_next_position_in_direction(player_pos, direction)
-	
-	if not is_valid_cell(target_pos): return false
-	if not is_tile_walkable(target_pos): return false
-	
-	var target_block = get_block_object_at(target_pos)
-	if target_block:
-		var push_success = target_block.attempt_push(direction)
-		if not push_success: return false
-	
-	
-	var success = player_obj.attempt_push(direction)
-	
-	return success
-
-func get_player_pos() -> Vector2i:
-	for pos in block_grid.keys():
-		if block_grid[pos] == BAT.Blocks.Player: return pos
-	
-	return Vector2i(-1, -1)
-
-func execute_move(move_data: Dictionary) -> bool:
-	print(move_data)
-	match move_data.get("type", ""):
-		"player_push":
-			var target_cell = get_player_pos()+move_data.get("direction") as Vector2i
-			if not is_valid_cell(target_cell): return false
-			var target_block = get_block_object_at(target_cell) as GenericBlock
-			if not is_instance_valid(target_block): return false
-			var success = target_block.attempt_push(move_data.get("direction", Vector2i(0, 1)))
-			return success
-		"player_move":
-			return attempt_player_movement(move_data.get("direction", Vector2i(0, 1)))
-		_:
-			return false
 
 
 #pathing
