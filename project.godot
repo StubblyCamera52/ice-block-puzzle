@@ -24,6 +24,10 @@ ComponentSystem="*res://scripts/systems/blockcomponents/blockcomponent.gd"
 Globals="*res://scripts/core/globals.gd"
 Levels="*res://assets/levels.gd"
 
+[display]
+
+window/stretch/mode="viewport"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg")

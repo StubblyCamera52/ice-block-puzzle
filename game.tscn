@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://muohp4qbqdvs"]
+[gd_scene load_steps=16 format=3 uid="uid://muohp4qbqdvs"]
 
 [ext_resource type="Script" uid="uid://ch1ii50onvhap" path="res://scripts/core/game.gd" id="1_e2o6t"]
 [ext_resource type="PackedScene" uid="uid://dscvgi5mxbxwv" path="res://scenes/core/grid_renderer.tscn" id="2_feb5d"]
@@ -7,7 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://dct8vxnxoj27c" path="res://scenes/core/flag.tscn" id="5_7jktm"]
 [ext_resource type="PackedScene" uid="uid://bei47pkxr2yuw" path="res://scenes/core/player.tscn" id="6_ryrav"]
 [ext_resource type="PackedScene" uid="uid://ck056kkxdmntb" path="res://gui.tscn" id="7_eow3j"]
-[ext_resource type="PackedScene" uid="uid://dni0tedl1oxdw" path="res://help_ui.tscn" id="8_j5wjh"]
+[ext_resource type="PackedScene" uid="uid://cr0gq25nwwkax" path="res://goals_ui.tscn" id="7_vef74"]
+[ext_resource type="PackedScene" uid="uid://dflxlagfy4jpv" path="res://help_ui_2.tscn" id="9_vef74"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ryrav"]
 sky_top_color = Color(0.7819518, 0.8119445, 0.89951766, 1)
@@ -77,9 +78,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.553285, 0)
 [node name="goalcheck" type="Timer" parent="."]
 autostart = true
 
-[node name="MainMenuGUI" parent="." instance=ExtResource("7_eow3j")]
+[node name="GoalsUI" parent="." instance=ExtResource("7_vef74")]
 
-[node name="HelpUI" parent="." instance=ExtResource("8_j5wjh")]
-visible = false
+[node name="HelpUI2" parent="." instance=ExtResource("9_vef74")]
+
+[node name="MainMenuGUI" parent="." instance=ExtResource("7_eow3j")]
 
 [connection signal="timeout" from="goalcheck" to="." method="_on_goalcheck_timeout"]

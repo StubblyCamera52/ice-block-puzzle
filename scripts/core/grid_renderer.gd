@@ -11,7 +11,8 @@ const tile_models := {
 	BAT.Tiles.Water: preload("res://scenes/tiles/water.tscn"),
 	BAT.Tiles.Hole: preload("res://scenes/tiles/hole.tscn"),
 	BAT.Tiles.Freezer: preload("res://scenes/tiles/freezer.tscn"),
-	BAT.Tiles.Heater: preload("res://scenes/tiles/heater.tscn")
+	BAT.Tiles.Heater: preload("res://scenes/tiles/heater.tscn"),
+	BAT.Tiles.SwitchUnpressed: preload("res://scenes/tiles/switch.tscn")
 }
 
 const block_models := {

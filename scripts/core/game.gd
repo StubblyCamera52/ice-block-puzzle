@@ -16,7 +16,7 @@ func _ready() -> void:
 	await get_tree().process_frame
 	$MainMenuGUI/CenterContainer/MenuButtons/StartButton.pressed.connect(func():
 		$MainMenuGUI.visible = false
-		start_level("level00")
+		start_level(0)
 	)
 	#$MainMenuGUI/CenterContainer/MenuButtons/TutorialButton.pressed.connect(func(): $HelpUI.visible = true)
 	#start_level("testlevel01")
@@ -25,28 +25,26 @@ func restart_level():
 	if GameStateManager.current_level:
 		GameStateManager.load_level(GameStateManager.current_level)
 
-func start_level(level_id: String):
+func start_level(level_id: int):
 	Globals.unlock()
 	Globals.set_input_enabled()
-	var level: LevelData
-	match level_id:
-		"level00": level = Levels.parse_level_string(Levels.level00)
-		"level01": level = Levels.parse_level_string(Levels.level01)
-		"level02": level = Levels.parse_level_string(Levels.level02)
-		"testlevel01": level = Levels.parse_level_string(Levels.testlevel01)
+	var level: LevelData = Levels.parse_level_string(Levels.mainLevels[level_id])
 	if not level: return
 	$Camera3D.position = Vector3((level.grid_size.x/2), 5.0, level.grid_size.y+.5)
 	$Player.position = Vector3(level.player_start_pos.x, 0, level.player_start_pos.y)
 	var end_pos = level.goals[0].target_positions[0]
-	flag.position = Vector3(end_pos.x, 0.1, end_pos.y)
+	if level.goals[0].goal_type != LevelData.LevelGoal.Type.REACH_EXIT:
+		end_pos = Vector2(30, 30)
+	flag.position = Vector3(end_pos.x+0.5, 0.1, end_pos.y+0.5)
 	GameStateManager.load_level(level)
 	$Player.collision_grid.rebuildGrid()
 	level_started.emit()
 
 func on_level_completed(level_data: LevelData):
 	match level_data.level_id:
-		"level00":start_level("level01");return;
-		"level01":start_level("level02");return;
+		"level00": start_level(1);return;
+		"level01": start_level(2);return;
+		"level02": start_level(3);return;
 	Globals.set_input_disabled()
 	Globals.lock()
 	print("complete")

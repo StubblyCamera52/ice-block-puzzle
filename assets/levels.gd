@@ -7,7 +7,7 @@ extends Node
 # goal def (total num of goals)|[(type|posX|posY) per goal]
 
 # tiles
-# .  =stone, _ = hole, w = water, i = ice, h = heater, f = freezer
+# .  =stone, _ = hole, w = water, i = ice, h = heater, f = freezer, s = switch
 # blocks
 # I = ice, . = nothing (air?), # = invisblocking, S = snow, M = melting
 
@@ -36,6 +36,7 @@ func parse_level_string(level_string: String) -> LevelData:
 				"_": data.initial_tiles.set(Vector2i(cellx, y), BAT.Tiles.Hole)
 				"h": data.initial_tiles.set(Vector2i(cellx, y), BAT.Tiles.Heater)
 				"f": data.initial_tiles.set(Vector2i(cellx, y), BAT.Tiles.Freezer)
+				"s": data.initial_tiles.set(Vector2i(cellx, y), BAT.Tiles.SwitchUnpressed)
 				_: data.initial_tiles.set(Vector2i(cellx, y), BAT.Tiles.Stone)
 	
 	var block_offset = 3+data.grid_size.y
@@ -118,28 +119,44 @@ GOAL_DEF
 """
 
 const level02 = """LEVEL_DEF
-level02|8|8|0|4
+level02|8|5|0|4
 TILE_DEF
-........
-........
-........
-.....___
-..iiwww.
-.....___
-........
-........
+...._...
+...._...
+iiiiwww.
+...__...
+...__...
 BLOCK_DEF
-........
-........
-........
-.I..####
-........
-.II.####
-........
-........
+....####
+....####
+.I......
+.III####
+...#####
 GOAL_DEF
-1
-2|7|4
+3
+0|4|2
+0|5|2
+0|6|2
+"""
+
+const level03 = """LEVEL_DEF
+level03|4|4|0|0
+TILE_DEF
+.iis
+.iis
+.iis
+.iis
+BLOCK_DEF
+.I..
+.I..
+.I..
+.I..
+GOAL_DEF
+4
+1|3|0
+1|3|1
+1|3|2
+1|3|3
 """
 
 const testlevel01 = """LEVEL_DEF
@@ -170,6 +187,7 @@ GOAL_DEF
 """
 
 
+
 const mainLevels = [
-	level00, level01, level02
+	level00, level01, level02, level03
 ]
