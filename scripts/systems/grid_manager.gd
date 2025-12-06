@@ -5,10 +5,12 @@ var block_grid: Dictionary[Vector2i, BAT.Blocks] = {}
 var block_objects: Dictionary[Vector2i, GenericBlock] = {}
 
 var grid_size: Vector2i = Vector2i(10, 10)
+var player_pos: Vector2 = Vector2.ZERO
 
 
 signal block_created(cell: Vector2i, block_obj: GenericBlock)
 signal block_moved(from: Vector2i, to: Vector2i, type: BAT.Blocks)
+signal block_removed()
 signal tile_changed(cell: Vector2i, old: BAT.Tiles, new: BAT.Tiles)
 signal update_visual_grid(block_grid: Dictionary, tile_grid: Dictionary)
 
@@ -20,6 +22,8 @@ func create_block_at(cell: Vector2i, block_type: BAT.Blocks) -> GenericBlock:
 	match block_type:
 		BAT.Blocks.Ice: block_object = IceBlock.new(cell, block_type)
 		BAT.Blocks.InvisibleBlocking: block_object = InvisBlocking.new(cell, block_type)
+		BAT.Blocks.Snow: block_object = SnowBlock.new(cell, block_type)
+		BAT.Blocks.Melting: block_object = MeltingBlock.new(cell, block_type)
 	
 	block_object._ready()
 	block_created.emit(cell, block_object)
@@ -31,8 +35,15 @@ func remove_block_at(cell: Vector2i):
 	if not block_obj: return
 	block_objects.erase(cell)
 	if block_obj.visual_node: block_obj.visual_node.queue_free()
+	block_removed.emit()
 
 # utils
+func update_player_pos(new_pos: Vector2):
+	player_pos = new_pos
+
+func get_player_pos() -> Vector2i:
+	return player_pos.floor()
+
 func is_valid_cell(cell: Vector2i) -> bool:
 	return (cell.x >= 0 and cell.x < grid_size.x) and (cell.y >= 0 and cell.y < grid_size.y)
 

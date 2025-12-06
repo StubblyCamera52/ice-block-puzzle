@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2f8o1aal5l7h"]
+
+[ext_resource type="Script" uid="uid://ci0734pdcj4f6" path="res://scenes/tiles/scripts/generic.gd" id="1_6vxyk"]
+[ext_resource type="PackedScene" uid="uid://c718nelkiehie" path="res://assets/models/tiles/Tile_HEATER.glb" id="2_x1b0h"]
+
+[node name="Heater" type="Node3D"]
+script = ExtResource("1_6vxyk")
+TileType = 5
+metadata/_custom_type_script = "uid://ci0734pdcj4f6"
+
+[node name="Tile_HEATER" parent="." instance=ExtResource("2_x1b0h")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)

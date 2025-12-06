@@ -82,7 +82,7 @@ const TileProperties := {
 		"effects": ["melt_ice"]
 	},
 	Tiles.Freezer: {
-		"wakable": true,
+		"walkable": true,
 		"slide_behavior": SlideBehavior.STOP,
 		"slide_direction": Vector2i(0, 0),
 		"effects": ["freeze_melting"]

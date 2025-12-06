@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://dqmlgrybrw1qn"]
+
+[ext_resource type="Script" uid="uid://ci0734pdcj4f6" path="res://scenes/tiles/scripts/generic.gd" id="1_8ivaf"]
+[ext_resource type="PackedScene" uid="uid://bs48c1hsy8p6e" path="res://assets/models/tiles/Tile_FREEZER.glb" id="2_rp2rh"]
+
+[node name="Freezer" type="Node3D"]
+script = ExtResource("1_8ivaf")
+TileType = 6
+metadata/_custom_type_script = "uid://ci0734pdcj4f6"
+
+[node name="Tile_FREEZER" parent="." instance=ExtResource("2_rp2rh")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)

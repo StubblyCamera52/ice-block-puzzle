@@ -7,9 +7,9 @@ extends Node
 # goal def (total num of goals)|[(type|posX|posY) per goal]
 
 # tiles
-# .  =stone, _ = hole, w = water, i = ice
+# .  =stone, _ = hole, w = water, i = ice, h = heater, f = freezer
 # blocks
-# I = ice, . = nothing (air?), # = invisblocking
+# I = ice, . = nothing (air?), # = invisblocking, S = snow, M = melting
 
 
 func parse_level_string(level_string: String) -> LevelData:
@@ -22,6 +22,7 @@ func parse_level_string(level_string: String) -> LevelData:
 	if not (level_metadata[0] or level_metadata[1] or level_metadata[2]): return null
 	data.level_id = level_metadata[0]
 	data.grid_size = Vector2i(level_metadata.get(1).to_int(), level_metadata.get(2).to_int())
+	data.player_start_pos = Vector2(level_metadata.get(3).to_float()+0.5, level_metadata.get(4).to_float()+0.5)
 	
 	if not lines.get(2) == "TILE_DEF": return null
 	for celly in range(3, 3+data.grid_size.y):
@@ -33,6 +34,8 @@ func parse_level_string(level_string: String) -> LevelData:
 				"i": data.initial_tiles.set(Vector2i(cellx, y), BAT.Tiles.Ice)
 				"w": data.initial_tiles.set(Vector2i(cellx, y), BAT.Tiles.Water)
 				"_": data.initial_tiles.set(Vector2i(cellx, y), BAT.Tiles.Hole)
+				"h": data.initial_tiles.set(Vector2i(cellx, y), BAT.Tiles.Heater)
+				"f": data.initial_tiles.set(Vector2i(cellx, y), BAT.Tiles.Freezer)
 				_: data.initial_tiles.set(Vector2i(cellx, y), BAT.Tiles.Stone)
 	
 	var block_offset = 3+data.grid_size.y
@@ -45,6 +48,8 @@ func parse_level_string(level_string: String) -> LevelData:
 				".": continue
 				"I": data.initial_blocks.set(Vector2i(cellx, y), BAT.Blocks.Ice)
 				"#": data.initial_blocks.set(Vector2i(cellx, y), BAT.Blocks.InvisibleBlocking)
+				"M": data.initial_blocks.set(Vector2i(cellx, y), BAT.Blocks.Melting)
+				"S": data.initial_blocks.set(Vector2i(cellx, y), BAT.Blocks.Snow)
 				_: continue
 	
 	var goal_offset = block_offset+data.grid_size.y+1
@@ -78,7 +83,7 @@ GOAL_DEF
 2|3|3"""
 
 const level00 = """LEVEL_DEF
-level00|4|4
+level00|4|4|0|0
 TILE_DEF
 ..__
 _.__
@@ -94,7 +99,7 @@ GOAL_DEF
 2|3|3"""
 
 const level01 = """LEVEL_DEF
-level01|5|5
+level01|5|5|0|2
 TILE_DEF
 .....
 .....
@@ -113,7 +118,7 @@ GOAL_DEF
 """
 
 const level02 = """LEVEL_DEF
-level02|8|8
+level02|8|8|0|4
 TILE_DEF
 ........
 ........
@@ -135,4 +140,29 @@ BLOCK_DEF
 GOAL_DEF
 1
 2|7|4
+"""
+
+const testlevel01 = """LEVEL_DEF
+level02|8|8|0|4
+TILE_DEF
+........
+........
+........
+.....___
+..iiwww.
+.....___
+...hf...
+........
+BLOCK_DEF
+........
+..SSMM..
+........
+.I..####
+........
+.II.####
+........
+........
+GOAL_DEF
+1
+2|9|9
 """

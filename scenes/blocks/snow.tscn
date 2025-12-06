@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bfwxhncr5thcv"]
+
+[ext_resource type="Script" uid="uid://cecyg40v3qdap" path="res://scenes/blocks/scripts/block_renderer.gd" id="1_w1ac8"]
+[ext_resource type="PackedScene" uid="uid://dwawt5kbka4el" path="res://assets/models/blocks/Block_SNOW.glb" id="2_s5ufo"]
+
+[node name="Snow" type="Node3D"]
+script = ExtResource("1_w1ac8")
+metadata/_custom_type_script = "uid://cecyg40v3qdap"
+
+[node name="Block_SNOW" parent="." instance=ExtResource("2_s5ufo")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.5, 0)

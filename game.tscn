@@ -7,21 +7,23 @@
 [ext_resource type="PackedScene" uid="uid://dct8vxnxoj27c" path="res://scenes/core/flag.tscn" id="5_7jktm"]
 [ext_resource type="PackedScene" uid="uid://bei47pkxr2yuw" path="res://scenes/core/player.tscn" id="6_ryrav"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e2o6t"]
-sky_top_color = Color(1, 1, 1, 1)
-sky_horizon_color = Color(1.6807325, 1.663693, 1.6446381, 1)
-ground_bottom_color = Color(0.59707975, 0.52892137, 0.45270216, 1)
-ground_horizon_color = Color(1.6807325, 1.663693, 1.6446381, 1)
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ryrav"]
+sky_top_color = Color(0.7819518, 0.8119445, 0.89951766, 1)
+sky_horizon_color = Color(0.87199605, 0.8794942, 0.90138745, 1)
+ground_bottom_color = Color(0, 0, 0, 1)
+ground_horizon_color = Color(0.87199605, 0.8794942, 0.90138745, 1)
+energy_multiplier = 0.5
 
-[sub_resource type="Sky" id="Sky_feb5d"]
-sky_material = SubResource("ProceduralSkyMaterial_e2o6t")
+[sub_resource type="Sky" id="Sky_eow3j"]
+sky_material = SubResource("ProceduralSkyMaterial_ryrav")
 
-[sub_resource type="Environment" id="Environment_fc0e3"]
-background_mode = 2
-sky = SubResource("Sky_feb5d")
+[sub_resource type="Environment" id="Environment_j5wjh"]
+background_mode = 1
+sky = SubResource("Sky_eow3j")
+ambient_light_source = 2
+ambient_light_color = Color(0.6255969, 0.62559724, 0.62559694, 1)
 tonemap_mode = 3
-fog_mode = 1
-fog_density = 1.0
+tonemap_white = 16.0
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_fc0e3"]
 exposure_multiplier = 0.57
@@ -41,13 +43,13 @@ size = Vector2(100, 100)
 script = ExtResource("1_e2o6t")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_fc0e3")
+environment = SubResource("Environment_j5wjh")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.3420201, 0.6152551, -0.7102699, 0, 0.7558535, 0.6547408, 0.9396926, -0.22393452, 0.2585171, 0, 0, 0)
-light_color = Color(0.5790201, 0.57902014, 0.57902014, 1)
-light_indirect_energy = 0.5
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+light_color = Color(0.56648844, 0.5099908, 0.5102426, 1)
 shadow_enabled = true
+sky_mode = 1
 
 [node name="GridRenderer" parent="." instance=ExtResource("2_feb5d")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
@@ -69,4 +71,8 @@ mesh = SubResource("PlaneMesh_fc0e3")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.553285, 0)
 
 [node name="Player" parent="." instance=ExtResource("6_ryrav")]
-waddle_speed = 2.5
+
+[node name="goalcheck" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="goalcheck" to="." method="_on_goalcheck_timeout"]

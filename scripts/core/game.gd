@@ -14,7 +14,7 @@ signal level_completed()
 func _ready() -> void:
 	GameStateManager.level_completed.connect(on_level_completed)
 	await get_tree().process_frame
-	start_level("level00")
+	start_level("testlevel01")
 
 func restart_level():
 	if GameStateManager.current_level:
@@ -28,8 +28,10 @@ func start_level(level_id: String):
 		"level00": level = Levels.parse_level_string(Levels.level00)
 		"level01": level = Levels.parse_level_string(Levels.level01)
 		"level02": level = Levels.parse_level_string(Levels.level02)
+		"testlevel01": level = Levels.parse_level_string(Levels.testlevel01)
 	if not level: return
 	$Camera3D.position = Vector3((level.grid_size.x/2), 5.0, level.grid_size.y+.5)
+	$Player.position = Vector3(level.player_start_pos.x, 0, level.player_start_pos.y)
 	var end_pos = level.goals[0].target_positions[0]
 	flag.position = Vector3(end_pos.x, 0.1, end_pos.y)
 	GameStateManager.load_level(level)
@@ -44,3 +46,7 @@ func on_level_completed(level_data: LevelData):
 	Globals.lock()
 	print("complete")
 	level_completed.emit()
+
+
+func _on_goalcheck_timeout() -> void:
+	GameStateManager.check_goals()

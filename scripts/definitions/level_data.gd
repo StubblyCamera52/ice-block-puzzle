@@ -5,7 +5,7 @@ class_name LevelData extends Resource
 @export var grid_size: Vector2i = Vector2i(10, 10)
 @export var initial_tiles: Dictionary[Vector2i, BAT.Tiles]
 @export var initial_blocks: Dictionary[Vector2i, BAT.Blocks]
-@export var player_start_pos: Vector2i = Vector2i(0, 5)
+@export var player_start_pos: Vector2 = Vector2(0, 5)
 @export var goals: Array[LevelGoal] = []
 
 class LevelGoal extends Resource:

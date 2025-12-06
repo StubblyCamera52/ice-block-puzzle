@@ -9,11 +9,15 @@ const tile_models := {
 	BAT.Tiles.Stone: preload("res://scenes/tiles/stone.tscn"),
 	BAT.Tiles.Ice: preload("res://scenes/tiles/ice.tscn"),
 	BAT.Tiles.Water: preload("res://scenes/tiles/water.tscn"),
-	BAT.Tiles.Hole: preload("res://scenes/tiles/hole.tscn")
+	BAT.Tiles.Hole: preload("res://scenes/tiles/hole.tscn"),
+	BAT.Tiles.Freezer: preload("res://scenes/tiles/freezer.tscn"),
+	BAT.Tiles.Heater: preload("res://scenes/tiles/heater.tscn")
 }
 
 const block_models := {
 	BAT.Blocks.Ice: preload("res://scenes/blocks/ice.tscn"),
+	BAT.Blocks.Snow: preload("res://scenes/blocks/snow.tscn"),
+	BAT.Blocks.Melting: preload("res://scenes/blocks/melting.tscn")
 }
 
 func _ready() -> void:
