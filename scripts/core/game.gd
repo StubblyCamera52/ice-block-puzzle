@@ -14,7 +14,12 @@ signal level_completed()
 func _ready() -> void:
 	GameStateManager.level_completed.connect(on_level_completed)
 	await get_tree().process_frame
-	start_level("testlevel01")
+	$MainMenuGUI/CenterContainer/MenuButtons/StartButton.pressed.connect(func():
+		$MainMenuGUI.visible = false
+		start_level("level00")
+	)
+	#$MainMenuGUI/CenterContainer/MenuButtons/TutorialButton.pressed.connect(func(): $HelpUI.visible = true)
+	#start_level("testlevel01")
 
 func restart_level():
 	if GameStateManager.current_level:

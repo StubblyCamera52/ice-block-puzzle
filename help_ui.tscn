@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://dni0tedl1oxdw"]
+
+[node name="HelpUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.2
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="ControlsButton" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Controls"
+
+[node name="BlocksButton" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Blocks"
+
+[node name="CommonTilesButton" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Common Tiles"
+
+[node name="OtherTilesButton" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Other Tiles"
+
+[node name="Goals" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Goals"
