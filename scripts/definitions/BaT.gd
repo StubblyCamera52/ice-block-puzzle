@@ -26,6 +26,7 @@ enum Tiles {
 	Conveyor,
 	ThinIce,
 	Wind,
+	SwitchUnpressed,
 }
 
 enum SlideBehavior {
@@ -105,6 +106,11 @@ const TileProperties := {
 		"slide_behavior": SlideBehavior.DIRECTIONAL,
 		"slide_direction": Vector2i(0, 1),
 		"effects": ["wind_push"]
+	},
+	Tiles.SwitchUnpressed: {
+		"walkable": true,
+		"slide_behavior": SlideBehavior.STOP,
+		"slide_direction": Vector2i(0, 0)
 	}
 }
 

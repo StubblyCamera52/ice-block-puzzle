@@ -163,6 +163,13 @@ BLOCK_DEF
 ........
 ........
 GOAL_DEF
-1
-2|9|9
+3
+0|4|4
+0|5|4
+0|6|4
 """
+
+
+const mainLevels = [
+	level00, level01, level02
+]

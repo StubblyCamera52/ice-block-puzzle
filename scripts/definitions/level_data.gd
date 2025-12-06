@@ -24,9 +24,14 @@ class LevelGoal extends Resource:
 	func check_completion() -> bool:
 		match goal_type:
 			Type.FILL_HOLES:
+				if GridManager.get_tile_at(target_positions[0]) != BAT.Tiles.Water:
+					return true
 				return false
 			Type.ACTIVATE_SWITCHES:
-				return false
+				if GridManager.get_block_at(target_positions[0]) == BAT.Blocks.Ice:
+					return true
+				else:
+					return false
 			Type.REACH_EXIT:
 				if GridManager.get_player_pos().length() == target_positions[0].length():
 					return true
