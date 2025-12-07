@@ -1,10 +1,10 @@
 extends Control
 
 const help_texts = [
-	"Move with [b]Arrow Keys[/b], Push blocks with [b]Space[/b], [b]H[/b] to restart level",
-	"[b]Ice Blocks[/b] slide on [b]Ice[/b]",
-	"Fill all of the [b]Water Holes[/b]",
-	"Activate all of the [b]Switches[/b]",
+	"Move with [b]Arrow Keys[/b], Push blocks with [b]Space[/b], [b]H[/b] to restart level.",
+	"[b]Ice Blocks[/b] slide on [b]Ice[/b].",
+	"Blocks will stop when they collide with another block.",
+	"[b]Switches[/b] activate when an [b]Ice Block[/b] is on top.",
 ]
 
 # Called when the node enters the scene tree for the first time.

@@ -159,6 +159,26 @@ GOAL_DEF
 1|3|3
 """
 
+const level04 = """LEVEL_DEF
+level04|4|4|0|0
+TILE_DEF
+.iis
+.iis
+.iis
+.iis
+BLOCK_DEF
+.I..
+.I..
+.I..
+.I..
+GOAL_DEF
+4
+1|3|0
+1|3|1
+1|3|2
+1|3|3
+"""
+
 const testlevel01 = """LEVEL_DEF
 level02|8|8|0|4
 TILE_DEF

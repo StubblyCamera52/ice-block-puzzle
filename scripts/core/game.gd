@@ -7,6 +7,8 @@ var player_facing_direction: Vector2i = Vector2.RIGHT
 @onready var camera: Camera3D = $Camera3D
 @onready var flag: Node3D = $flag
 
+var current_level_id = 0
+
 signal level_started()
 signal level_completed()
 
@@ -25,11 +27,16 @@ func restart_level():
 	if GameStateManager.current_level:
 		GameStateManager.load_level(GameStateManager.current_level)
 
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event.is_action_pressed("restart"):
+		start_level(current_level_id)
+
 func start_level(level_id: int):
 	Globals.unlock()
 	Globals.set_input_enabled()
 	var level: LevelData = Levels.parse_level_string(Levels.mainLevels[level_id])
 	if not level: return
+	current_level_id = level_id
 	$Camera3D.position = Vector3((level.grid_size.x/2), 5.0, level.grid_size.y+.5)
 	$Player.position = Vector3(level.player_start_pos.x, 0, level.player_start_pos.y)
 	var end_pos = level.goals[0].target_positions[0]
