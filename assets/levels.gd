@@ -179,6 +179,17 @@ GOAL_DEF
 1|3|3
 """
 
+const level05 = """LEVEL_DEF
+level05|5|1|0|0
+TILE_DEF
+.ihfs
+BLOCK_DEF
+.I...
+GOAL_DEF
+1
+1|4|0
+"""
+
 const testlevel01 = """LEVEL_DEF
 level02|8|8|0|4
 TILE_DEF
@@ -209,5 +220,5 @@ GOAL_DEF
 
 
 const mainLevels = [
-	level00, level01, level02, level03
+	level00, level01, level02, level03, level04, level05
 ]
