@@ -17,7 +17,7 @@ H to reset
 
 
 changes:
-- Now there is 7 levels
+- Now there are 6 levels
 - goal and help texts
 - new player controller
 - more blocks
