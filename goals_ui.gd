@@ -5,7 +5,6 @@ const goal_texts = [
 	"Get to the [b]Flag[/b]",
 	"Fill all of the [b]Water Holes[/b]",
 	"Activate all of the [b]Switches[/b]",
-	"Activate all of the [b]Switches[/b]",
 	"Activate the [b]Switch[/b]",
 	"Activate the [b]Switches[/b], and reach the [b]exit[/b]"
 ]
@@ -23,4 +22,3 @@ func update_goals() -> void:
 		"level03": $RichTextLabel.clear(); $RichTextLabel.append_text(goal_texts[3])
 		"level04": $RichTextLabel.clear(); $RichTextLabel.append_text(goal_texts[4])
 		"level05": $RichTextLabel.clear(); $RichTextLabel.append_text(goal_texts[5])
-		"level06": $RichTextLabel.clear(); $RichTextLabel.append_text(goal_texts[6])
