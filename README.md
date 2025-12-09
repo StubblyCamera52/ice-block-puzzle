@@ -1,4 +1,4 @@
-# Ice Block Puzzle
+# Ice Block Puzzle v0.0.2
 
 A game where you push cubes to solve puzzles  
 Made in godot
@@ -9,9 +9,16 @@ Made in godot
 get to the goal  
 push ice blocks into water to turn the water into ice  
 
+more instructions in the actual game
+
 wasd to move  
 space to push (walking into block also pushes it)  
 H to reset  
 
 
-currently their is only 3 levels because i fell asleep on sunday and didnt have time to make more :( but i plan on continuing work on this game this week so I will add more soon
+changes:
+- Now there is 7 levels
+- goal and help texts
+- new player controller
+- more blocks
+- more tiles
