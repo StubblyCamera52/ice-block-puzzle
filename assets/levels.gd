@@ -159,28 +159,8 @@ GOAL_DEF
 1|3|3
 """
 
-const level04 = """LEVEL_DEF
-level04|4|4|0|0
-TILE_DEF
-.iis
-.iis
-.iis
-.iis
-BLOCK_DEF
-.I..
-.I..
-.I..
-.I..
-GOAL_DEF
-4
-1|3|0
-1|3|1
-1|3|2
-1|3|3
-"""
-
 const level05 = """LEVEL_DEF
-level05|5|1|0|0
+level04|5|1|0|0
 TILE_DEF
 .ihfs
 BLOCK_DEF
@@ -188,6 +168,25 @@ BLOCK_DEF
 GOAL_DEF
 1
 1|4|0
+"""
+
+const level06 = """LEVEL_DEF
+level05|5|4|0|0
+TILE_DEF
+.iiii
+.iiii
+h._hh
+ssifw
+BLOCK_DEF
+.....
+.I.I.
+..#..
+.M...
+GOAL_DEF
+2
+2|4|3
+1|0|3
+1|1|3
 """
 
 const testlevel01 = """LEVEL_DEF
@@ -220,5 +219,5 @@ GOAL_DEF
 
 
 const mainLevels = [
-	level00, level01, level02, level03, level04, level05
+	level00, level01, level02, level03, level05, level06
 ]

@@ -5,7 +5,7 @@ const help_texts = [
 	"[b]Ice Blocks[/b] slide on [b]Ice[/b].",
 	"Blocks will stop when they collide with another block.",
 	"[b]Switches[/b] activate when an [b]Ice Block[/b] is on top.",
-	"e",
+	"",
 	"[b]Freezer[/b] tiles freeze [b]Melting Blocks[/b], and [b]Heater[/b] tiles melt [b]Ice Blocks[/b]."
 ]
 
@@ -20,5 +20,5 @@ func update_helps() -> void:
 		"level01": $RichTextLabel.clear(); $RichTextLabel.append_text(help_texts[1])
 		"level02": $RichTextLabel.clear(); $RichTextLabel.append_text(help_texts[2])
 		"level03": $RichTextLabel.clear(); $RichTextLabel.append_text(help_texts[3])
-		"level05": $RichTextLabel.clear(); $RichTextLabel.append_text(help_texts[5])
+		"level04": $RichTextLabel.clear(); $RichTextLabel.append_text(help_texts[5])
 		_: $RichTextLabel.clear();

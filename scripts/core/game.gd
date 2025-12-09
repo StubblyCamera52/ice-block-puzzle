@@ -18,7 +18,7 @@ func _ready() -> void:
 	await get_tree().process_frame
 	$MainMenuGUI/CenterContainer/MenuButtons/StartButton.pressed.connect(func():
 		$MainMenuGUI.visible = false
-		start_level(5)
+		start_level(0)
 	)
 	#$MainMenuGUI/CenterContainer/MenuButtons/TutorialButton.pressed.connect(func(): $HelpUI.visible = true)
 	#start_level("testlevel01")
@@ -37,7 +37,7 @@ func start_level(level_id: int):
 	var level: LevelData = Levels.parse_level_string(Levels.mainLevels[level_id])
 	if not level: return
 	current_level_id = level_id
-	$Camera3D.position = Vector3((level.grid_size.x/2), 5.0, level.grid_size.y+2)
+	$Camera3D.position = Vector3((level.grid_size.x/2), 5.0, level.grid_size.y+1)
 	$Player.position = Vector3(level.player_start_pos.x, 0, level.player_start_pos.y)
 	var end_pos = level.goals[0].target_positions[0]
 	if level.goals[0].goal_type != LevelData.LevelGoal.Type.REACH_EXIT:
@@ -52,6 +52,8 @@ func on_level_completed(level_data: LevelData):
 		"level00": start_level(1);return;
 		"level01": start_level(2);return;
 		"level02": start_level(3);return;
+		"level03": start_level(4);return;
+		"level04": start_level(5);return;
 	Globals.set_input_disabled()
 	Globals.lock()
 	print("complete")

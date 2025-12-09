@@ -6,7 +6,8 @@ const goal_texts = [
 	"Fill all of the [b]Water Holes[/b]",
 	"Activate all of the [b]Switches[/b]",
 	"Activate all of the [b]Switches[/b]",
-	"Activate the [b]Switch[/b]"
+	"Activate the [b]Switch[/b]",
+	"Activate the [b]Switches[/b], and reach the [b]exit[/b]"
 ]
 
 # Called when the node enters the scene tree for the first time.
@@ -22,3 +23,4 @@ func update_goals() -> void:
 		"level03": $RichTextLabel.clear(); $RichTextLabel.append_text(goal_texts[3])
 		"level04": $RichTextLabel.clear(); $RichTextLabel.append_text(goal_texts[4])
 		"level05": $RichTextLabel.clear(); $RichTextLabel.append_text(goal_texts[5])
+		"level06": $RichTextLabel.clear(); $RichTextLabel.append_text(goal_texts[6])
